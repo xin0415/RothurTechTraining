@@ -25,11 +25,11 @@ public class Day1Note {
 
         int a = 1;
         Integer b = 1;
-        System.out.println(a + b);
+        System.out.println(a + b);      // It is working. output: 2
         List<Integer> list = new ArrayList<>();
         list.add(b);
         list.add(a);
-        System.out.println(list);
+        System.out.println(list);       // it is also working because of auto boxing
 
 4. String/ StringBuilder/ StringBuffer
     String immutable class,
@@ -106,6 +106,7 @@ Integer Pool
                 return Objects.hash(x, y);
             }
         }
+Whenever you override equals method, you must also override the hashCode method
 
 6. Data Structure
     Collection vs Collections
@@ -113,10 +114,12 @@ Integer Pool
         Queue: PriorityQueue, ArrayDeque, LinkedList..
         Set: HashSet, TreeSet, LinkedHashSet, ...
         List: LinkedList, ArrayList
+        LinkedList: Each node will store random location in memory
+        ArrayList: Each node will store adjacent location in memory
     Map
         TreeMap
         HashMap, HashTable, ConcurrentHashMap
-            HashMap, not thread safe, allow one null key
+            HashMap, not thread safe, allow one null key, default size 16
                 key  ------> hashCode-------> %, index = size of Map(16)
                  "abc"          33                    33 % 16 = 1
                  "dbc"          49                    49 % 16 = 1
@@ -126,10 +129,11 @@ Integer Pool
                         node2
              ArrayList, LinkedList ->  if len of LinkedList > 8, => RedBlack tree
 
-            HashTable, thread safe, lock whole object
+            HashTable, thread safe, lock whole object, default size 11, don't allow null key
             ConcurrentHashMap, thread safe, bucket level lock
 
        Stack vs Queue
+       Stack is thread save
 
 7 Comparator, Comparable
         //   Set<Node> set = new TreeSet<>(new MyComparator());
@@ -138,7 +142,9 @@ Integer Pool
         set.add(new Node(2, 2));
         set.add(new Node(3, 3));
         set.add(new Node(4, 4));
-        System.out.println(set.stream().findFirst().get().x); //
+        System.out.println(set.stream().findFirst().get().x); // error if don't implement comparable or comparator
+        // using comparator, output 1
+        // using comparable, output 4
 
         class MyComparator implements Comparator<Node> {
             @Override
