@@ -3,19 +3,27 @@ import java.util.*;
 
 public class Day2Note {
 /*
-1. Java, compile ocnce, run anywhere
+1. Java, compile once, run anywhere
     .java file  -> .class file (byteCode) -> machine code
 2. JVM Architecture
+Three components in JVM: Class Loader, Runtime data area, Execution Engine (Also, Native method Library)
+Class loader has Loading, Link, initial
+application class loader is subclass of extension class loader
+extension class loader is subclass of bootstrap class loader.
+    Loading part:
     CLass loader
         Bootstrap class Loader,   Extension class loader,       application class loader
         java.lang.*;              $JAVA_HOME/jre/lib/ext,    load files present on the classPath
         java.util.*;
 
         parents delegation model
-        app -> ext -> boot
-            <-      <-
+        application class loader -> extension class loader -> bootstrap class loader
+                                 <-                        <-
+    Link part: verify all the class files and linked them together
+    initial part: initial all the static fields and call the constructor to initial object
 
-     Runtime data area
+
+     Runtime data area - also call JVM memory model
         Method area: all class level data, run-time constant pool, field, and method data, ...
         Heap area: when using new keyword to create object, this object will be in heap area
         Stack area: stack frame, (call stack)
@@ -24,19 +32,20 @@ public class Day2Note {
         Native method stack: method written in other language
 
      Execution Engine
-        Interpreter: line by line, for
-        JIT compiler: hotspot
-        GC
-            phrases: mark, sweep, (compact)
+        Interpreter: line by line, for      (Interpreter class files)
+        JIT compiler: hotspot(code repeat so many times, for loop)               (Optimize the code)
+        GC: Garbage Collector
+            phrases: mark(scan heap area to find which object is not in use), sweep (collected objects), (compact - sort memory)
             types:
                 serial GC,       one thread, -> "stop the world"
                 parallel GC,     multiple threads
-                G1GC, (big memory space ( >= 4GB))chunks
+                G1GC will work for big memory space
+                G1GC, (big memory space ( >= 4GB))chunks            - each chunk will locate in different region
                     eden region, survivor region, tenured region, humongous region, available region
                 CMS: deprecated at java 9, removed at java 14 in favor of G1GC
-        JNI (native method interface): bridge
+        JNI (native method interface): bridge       - used to connect java application with native library
 
-3. reserved words (53)
+3. reserved words (53)      -total 53 keyboard
     reserved literals (3)
         true/false/null
     keywords(50)

@@ -110,12 +110,12 @@ Whenever you override equals method, you must also override the hashCode method
 
 6. Data Structure
     Collection vs Collections
-    Collection: Queue, Set, List
+    Collection: Queue, Set, List    - extends Collection
         Queue: PriorityQueue, ArrayDeque, LinkedList..
         Set: HashSet, TreeSet, LinkedHashSet, ...
         List: LinkedList, ArrayList
-        LinkedList: Each node will store random location in memory
-        ArrayList: Each node will store adjacent location in memory
+        LinkedList: Each node will store the random location in memory
+        ArrayList: Each node will store the adjacent location in memory
     Map
         TreeMap
         HashMap, HashTable, ConcurrentHashMap
