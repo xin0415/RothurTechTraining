@@ -7,7 +7,7 @@ public class Day2Note {
     .java file  -> .class file (byteCode) -> machine code
 2. JVM Architecture
 Three components in JVM: Class Loader, Runtime data area, Execution Engine (Also, Native method Library)
-Class loader has Loading, Link, initial
+Class loader has Loading, Linking, initialization
 application class loader is subclass of extension class loader
 extension class loader is subclass of bootstrap class loader.
     Loading part:
