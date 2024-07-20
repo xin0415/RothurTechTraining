@@ -26,7 +26,7 @@ extension class loader is subclass of bootstrap class loader.
      Runtime data area - also call JVM memory model
         Method area: all class level data, run-time constant pool, field, and method data, ...
         Heap area: when using new keyword to create object, this object will be in heap area
-        Stack area: stack frame, (call stack)
+        Stack area: stack frame, (call stack)       -each Stack only belong to one thread, so it is thread safe
         PC Register:
           multiple threads, pc register -> jvm instruction
         Native method stack: method written in other language
