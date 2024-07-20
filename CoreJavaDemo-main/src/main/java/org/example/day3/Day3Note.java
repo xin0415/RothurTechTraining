@@ -57,6 +57,7 @@ public class Day3Note {
                 }
             }
         finally
+        finally will always run even you return in try block, unless jVM shut down
 
         multiple catch
 
@@ -67,7 +68,7 @@ public class Day3Note {
             }
        try with resources
                AutoCloseable, close()
-
+               only the class that implement the AutoCloseable interface can put into try()
             try (
                     BufferedReader br = new BufferedReader(new FileReader("/"))
             )
@@ -80,7 +81,8 @@ public class Day3Note {
             }
 
     2. Genertics
-
+        Always pass class
+        <?>,<A extends B>, <B super A>
             class Node <K, V> {
                 K key;
                 V value;
