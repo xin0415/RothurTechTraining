@@ -3,8 +3,7 @@ package org.example.day3;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.*;
 
 public class Java8Test {
     /*
@@ -45,9 +44,27 @@ public class Java8Test {
 //        }
         Optional opt = Optional.ofNullable(array[0]);
         System.out.println(opt.orElse("the value is null"));
-        opt.orElseThrow(() -> new IllegalArgumentException("the value is null"));
+//        opt.orElseThrow(() -> new IllegalArgumentException("the value is null"));
         Optional opt2 = Optional.ofNullable(array2[0]);
         System.out.println(opt2.orElse("the value is null"));       // will print out "abc"
+        System.out.println("--------------------Functional Interface---------------------");
+        // predicate
+        Predicate<String> isLengthGreaterThan5 = str -> str.length() > 5;
+        System.out.println(isLengthGreaterThan5.test("Hello")); // false
+        System.out.println(isLengthGreaterThan5.test("Hello, World!")); // true
+
+        // supplier
+        Supplier<String> supplier = () -> "Hello, World!";
+        System.out.println(supplier.get()); // "Hello, World!"
+
+        // consumer
+        Consumer<String> consumer = str -> System.out.println(str);
+        consumer.accept("Hello, World!"); // Prints "Hello, World!"
+
+        // function
+        Function<String, Integer> stringLengthFunction = str -> str.length();
+        System.out.println(stringLengthFunction.apply("Hello")); // 5
+        System.out.println(stringLengthFunction.apply("Hello, World!")); // 13
     }
     public static int add(int[] array){
 //        if(array==null){
