@@ -20,6 +20,7 @@ public class ExceptionTest {
      *  3. is Ok to use try and finally without catch
      *  4. for multiple catch, subclass must write before super class
      *  5. only the class that implement the AutoCloseable interface can put into try()
+     *  6. try-with resource will handle the exception to close the resource, you need to use try-catch inside the finally to close to resource
      * */
     public static void main(String[] args)  {
 
@@ -61,5 +62,24 @@ public class ExceptionTest {
             System.out.println("in finally");
         }
         System.out.println("testFinally End");
+    }
+    public static void withoutUseTryWithResources(){
+        BufferedReader br=null;
+        try {
+            br=new BufferedReader(new FileReader("/"));
+        }catch (FileNotFoundException e){
+            throw new RuntimeException(e);
+        }
+        try {
+            br.readLine();
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
