@@ -132,7 +132,7 @@ Lock
                     }
                 }
             }
-
+54
 Dead Lock
       two or more threads are waiting for each other
       how to prevent deadlock

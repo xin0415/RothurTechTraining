@@ -7,12 +7,14 @@ public class CompletableFutureTest {
     /*
     *   sync need to wait for result
     *   async doesn't need to wait for result
-    *   1, Completable will start a new thread   .
-    *   2. the main thread will be blocked when get() it called
+    *   1, CompletableFuture will start a new thread   .
+    *   2. the main thread will be blocked when get() is called
     *   3. thenApplyAsync will start a new thread for operation
     *   4. thenCompose, then Combine    -   use to combine the result from two future
     *   5. allOf    -   if you want to use result from all the previous threads
     *   6. anyOf    -   if you only want to use one result from any of previous threads
+    *   7. runAsync used to execute a 'Runnable' task, don't have return type CompletableFuture<Void>
+    *   8. supplyAsync used to execute 'supplier' task, have return type. <CompletableFuture<T>, T is the type of the result produced by the 'Supplier'
     *
     * */
     private static Integer num=100;     //100+50, * 2->300
@@ -121,5 +123,11 @@ public class CompletableFutureTest {
         */
         //thenCompose, thenCombine
         //allOf, anyOf
+
+        CompletableFuture<Integer> future=CompletableFuture.completedFuture(1);
+        future.thenApplyAsync(val->val+=10).thenApply(val->val*=4).thenAcceptAsync(num-> System.out.println(num)).exceptionally(ex->{
+            System.out.println(ex.getMessage());
+            return null;
+        });
     }
 }
