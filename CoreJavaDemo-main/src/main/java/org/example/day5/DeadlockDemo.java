@@ -1,6 +1,11 @@
 package org.example.day5;
 
 public class DeadlockDemo {
+    /*
+    *   Mac used "jps" to check current process
+    *   use "jstack p_id" to check process information
+    *
+    * */
     public static void main(String[] args) {
         final String resource1 = "resource1";
         final String resource2 = "resource2";

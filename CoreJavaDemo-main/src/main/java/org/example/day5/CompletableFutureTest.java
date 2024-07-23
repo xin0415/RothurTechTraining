@@ -3,14 +3,22 @@ package org.example.day5;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class Day5Note {
-/*
-CompletableFuture: Future and CompletionState
-    sync and async
-    sync need to wait for result
-    async doesn't need to wait for result
-
-    without any return
+public class CompletableFutureTest {
+    /*
+    *   sync need to wait for result
+    *   async doesn't need to wait for result
+    *   1, Completable will start a new thread   .
+    *   2. the main thread will be blocked when get() it called
+    *   3. thenApplyAsync will start a new thread for operation
+    *   4. thenCompose, then Combine    -   use to combine the result from two future
+    *   5. allOf    -   if you want to use result from all the previous threads
+    *   6. anyOf    -   if you only want to use one result from any of previous threads
+    *
+    * */
+    private static Integer num=100;     //100+50, * 2->300
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        // without any return
+        /*
         System.out.println("main thread starts");
         CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
             try {
@@ -21,11 +29,14 @@ CompletableFuture: Future and CompletionState
                 ex.printStackTrace();
             }
         });
+        System.out.println("before get");
         future.get();
+        System.out.println("After get");
         System.out.println("main thread ends");
+        */
 
-
-    with return
+        // with return
+        /*
         System.out.println("main thread starts");
         CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
             try {
@@ -37,29 +48,41 @@ CompletableFuture: Future and CompletionState
             return "child thread is done";
         });
 
+        System.out.println("Before get");
         System.out.println("task result: " + future.get());
         System.out.println("main thread ends");
+        */
 
-    chain operations
+        // chain operation
+/*
         System.out.println("main thread starts");
-
-        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
             System.out.println("start adding 50 to number");
             num += 50;
             return num;
         }).thenApply(val -> {
             return val * 2;
-        }).thenApplyAsync(val -> val + 100).thenAccept(val -> {
-            System.out.println("this is the last step from mian thread");
-            System.out.println("result: " + (val - 1));
         });
+
+//        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+//            System.out.println("start adding 50 to number");
+//            num += 50;
+//            return num;
+//        }).thenApply(val -> {
+//            return val * 2;
+//        }).thenApplyAsync(val -> val + 100).thenAccept(val -> {
+//            System.out.println("this is the last step from mian thread");
+//            System.out.println("result: " + (val - 1));
+//        });
 
         System.out.println("task result: " + future.get());
         System.out.println("main thread ends");
+        */
 
-    exception
+        //exception
+        // first way to handle exception
+        /*
         System.out.println("main thread starts");
-
         CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
             int result = 1 / 0;
             System.out.println("add 10 to num");
@@ -72,9 +95,10 @@ CompletableFuture: Future and CompletionState
 
         System.out.println("task result: " + future.get());
         System.out.println("main thread ends");
+        */
 
-        -------------------------
-
+        // second way to handle exception
+        /*
         System.out.println("main thread starts");
         CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
 //            int result = 1 / 0;
@@ -94,62 +118,8 @@ CompletableFuture: Future and CompletionState
         });
         System.out.println("task result: " + future.get());
         System.out.println("main thread ends");
-
-        thenCompose, thenCombine
-        allOf, anyOf
-
-Lock
-    parallel vs concurrent
-    parallel:   thread or process is working on different thing
-    concurrent: different threads are working on the same object
-
-    Lock:
-        synchronized code block/ method/ static method/ class       - one can create one condition
-        Lock interface: ReentrantLock: lock(), unlock(), tryLock(), newCondition()...       -   can create many condition   - ReentrantLock is you want enter the object again, but increase the count size
-        tryLock() return true if there is not lock to object, you can lock it
-        ReadWriteLock interface: ReentrantReadWriteLock
-            Lock readLock();
-            Lock writeLock();
-
-            class MyClass {
-                public void method() {
-                    synchronized (MyClass.class) {
-                        // TODO
-                    }
-                }
-
-                public synchronized void method1() {
-
-                }
-
-                public synchronized static void method2() {
-
-                }
-
-                public void method3(){
-                    synchronized (this) {
-
-                    }
-                }
-            }
-
-Dead Lock
-      two or more threads are waiting for each other
-      how to prevent deadlock
-        avoid nested locks
-        avoid unnecessary lock
-            Stack, Vector, HashTable        // these data struct will put unnecessary lock into code
-        Use Thread join()
- */
-
-
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
-
-
-
-
+        */
+        //thenCompose, thenCombine
+        //allOf, anyOf
     }
 }
-
-
-

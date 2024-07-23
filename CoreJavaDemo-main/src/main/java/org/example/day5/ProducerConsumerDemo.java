@@ -9,6 +9,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /*
       producers  ->  [queue size = 3]   <- consumers
+      ReentrantLock basic on mesa module
+      producer thread needs to wait until not full condition to be true (queue is not full)
+      then notifyAll() all the thread, waiting thread will move the queue for waiting list
  */
 
 public class ProducerConsumerDemo {
@@ -51,18 +54,18 @@ class ProducerConsumerModel {
     Condition queueNotFull = lock.newCondition();
     Condition queueNotEmpty = lock.newCondition();
 
+    // for producer
     public void put() {
-        lock.lock();
+        lock.lock();        // lock the object
         try {
             while (queue.size() == capacity) {
                 System.out.println(Thread.currentThread().getName() + " wait, queue is full");
-                queueNotFull.await();
+                queueNotFull.await();       // waiting when queue is not full
             }
             int tempValue = myRandom.nextInt(100);
             queue.offer(tempValue);
             System.out.println(Thread.currentThread().getName() + " put " + tempValue);
-            queueNotEmpty.signalAll();
-
+            queueNotEmpty.signalAll();      // to notify to call all the waiting thread to tell queue is not empty
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
@@ -70,8 +73,9 @@ class ProducerConsumerModel {
         }
     }
 
+    // for consumer
     public void take() {
-        lock.lock();
+        lock.lock();        // lock the object
         try {
             while (queue.isEmpty()) {
                 System.out.println(Thread.currentThread().getName() + " wait, queue is empty");
@@ -79,7 +83,7 @@ class ProducerConsumerModel {
             }
             int tempValue = queue.poll();
             System.out.println(Thread.currentThread().getName() + " take " + tempValue);
-            queueNotFull.signalAll();
+            queueNotFull.signalAll();   // signal to tell queue is not full
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
