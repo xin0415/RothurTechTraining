@@ -20,7 +20,7 @@ public class ExceptionTest {
      *  3. is Ok to use try and finally without catch
      *  4. for multiple catch, subclass must write before super class
      *  5. only the class that implement the AutoCloseable interface can put into try()
-     *  6. try-with resource will handle the exception to close the resource, you need to use try-catch inside the finally to close to resource
+     *  6. try-with resource will handle the exception to close the resource. without used try-with resource, you need to use try-catch inside the finally to close to resource
      * */
     public static void main(String[] args)  {
 
