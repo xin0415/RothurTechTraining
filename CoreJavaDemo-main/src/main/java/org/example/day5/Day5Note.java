@@ -104,8 +104,8 @@ Lock
     concurrent: different threads are working on the same object
 
     Lock:
-        synchronized code block/ method/ static method/ class       - one can create one condition
-        Lock interface: ReentrantLock: lock(), unlock(), tryLock(), newCondition()...       -   can create many condition   - ReentrantLock is you want enter the object again, but increase the count size
+        synchronized code block/ method/ static method/ class       - one can create one condition  - don't require to release
+        Lock interface: ReentrantLock: lock(), unlock(), tryLock(), newCondition()...       -   can create many condition   - ReentrantLock is you want enter the object again, but increase the count size - lock is flexibility and require to release
         tryLock() return true if there is not lock to object, you can lock it
         ReadWriteLock interface: ReentrantReadWriteLock
             Lock readLock();
