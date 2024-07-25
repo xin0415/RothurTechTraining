@@ -9,10 +9,14 @@ OSI Model and TCP/IP Model
             - data link layer: format of data
             - physical layer: raw bit
     TCP/IP Model
-        - application layer
-        - transport layer
-        - internet layer
-        - network access layer
+        - application layer     -   contains application layer, presentation layer, session layer
+        - transport layer       -   transport layer
+        - internet layer        -   network layer
+        - network access layer  -   data link layer and physical layer
+
+            client              ---------------------http-------------------------->        server
+web browser/mobile/IOT device   <--------------------http---------------------------
+
 
 HTTP (Hypertext Transfer Protocol)
     - client-server model
@@ -21,24 +25,26 @@ HTTP (Hypertext Transfer Protocol)
     - Http Response
         - header / body
     - http method:
-        get: read                |   safe    |     idempotent      |    cacheable      |
+        get: read                |   safe    |     idempotent      |    cacheable      |            get is safe, so it is cacheable, this setup can be changed
         post: create             | not safe  |  not idempotent     |   not cacheable   |
         put: whole update        | not safe  |     idempotent      |   not cacheable   |
-        delete: remove           | not safe  |     idempotent      |   not cacheable   |
-        patch: partial update    | not safe  |  not idempotent (can be) |   not cacheable   |
+        delete: remove           | not safe  |     idempotent      |   not cacheable   |            is will leave database empty, so it is idempotent
+        patch: partial update    | not safe  |  not idempotent (can be) |   not cacheable   |       patch will flexibility, you don't need pass whole object, we can also pass operation {operation:"add", targetField:age} to cause patch is not idempotent
     - http status code
-        1xx information
+        1xx information         providing some base information
         2xx success
         3xx redirection
         4xx client error
         5xx server error
 
 HTTP advanced
-    safe, a http method is safe if it doesn't alter the state of the server
+    safe, a http method is safe if it doesn't alter(change) the state of the server
     idempotent: a http method is idempotent if an identical request can be made once or several times in a row
                 with the same effect while leaving the server in the same state
+                idempotent: send the multiple request, but keep the same status in servers
+                create resource in server and adding row into database, that is not idempotent
     cacheable
-        - whether response can be cached
+        - whether response can be cached        - store information in somewhere. can be your local brows or server side(session)
 
         post request: create a user (2, Mali, CA, 18)
         patch request: {operation: "add", targetField: age}
@@ -54,12 +60,14 @@ HTTP advanced
         301 moved permanently
         400 bad request
         401 unauthorized
-        403 forbidden
+        403 forbidden               user doesn't have permission
         404 not found
         500 internal server error
 
 
 TCP and UDP,
+    TCP - check if receive all the packet       send packets (1-100) to server, but server only receive (1-78,80-100), TCP will resubmit 79 package -lower speed
+    UDP - may lost package  - high speed because it doesn't check all the packages are received
     difference
     TCP 3 way handshaking / 4 way handshaking
 
