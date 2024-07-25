@@ -13,7 +13,8 @@
             hardware interface access, Logger, Configuration File, Thread Pool, Cache ....
 
 
-    Builder
+    Builder Design Pattern is to create a Builder class inside the class
+    Builder -   creation design pattern
         Car myCar = Car.build.frame("iron").make("Toyota").model("prius").modelYear(2000).build();
 
     Factory
@@ -25,9 +26,19 @@
     Observer
 
     static Proxy
+    buyer   ->  agent   ->  seller
+    client  ->  proxy   ->  server
+    client  <-  proxy   <-  server
+    proxy works as to filter the request, client will send the request to proxy, if request is valid, proxy will send to the server. The server will response to proxy, proxy send back to client. do security check
+    one to one relationship, each proxy only be relationship with one server
 
     dynamic proxy
+    one to many relationship, each proxy can connect with multiple servers
         - java reflection
+
+why java is dynamic programming language. because of reflection
+
+write/modify code  -> compile code  -> run it(running)          -> reflection allow you to modify code during the runtime
 
 2. reflection
        modify behavior of methods, classes interfaces at runtime

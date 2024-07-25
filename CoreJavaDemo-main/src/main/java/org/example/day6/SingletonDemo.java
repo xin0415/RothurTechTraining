@@ -27,15 +27,18 @@ class Singleton2 {
     private Singleton2() {}
 
     public static Singleton2 getInstance() {
+        // if doesn't have this if loop, the thread will lock whole object
         if (instance == null) {
             synchronized(Singleton2.class) {
                 if (instance == null) {
                     instance = new Singleton2();
-                    // 1 create instance reference
+                    // 1 create instance reference          Singletons instance;
                     // 2 new singleton();
-                    // 3 instance reference points to instance object,
+                    // 3 instance reference points to instance object,      point instance reference to new singleton()
                     // 1 -> 2 ->  3
                     // 1 -> 3 ->  2
+                    // CPU will do execute reorder. if 1->3->2 happen, instance already got reference, but the object is not created yet, it causes the issue
+                    // used volatile to prevent CPU reorder, it must always do 1->2->3
                 }
             }
         }
