@@ -161,6 +161,7 @@ public class LoggingAspect {
         }
     }
 }
+In this example, the logBeforeMethodExecution method is an advice that runs before the execution of any method in the com.example.service package. The JoinPoint parameter provides access to the method signature and its arguments.
 ---------------------aspect
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -181,7 +182,24 @@ public class PerformanceAspect {
         System.out.println("After method execution, result: " + result);
     }
 }
+The PerformanceAspect class is an aspect containing two advices.
+The logBeforeMethodExecution method runs before any method in the com.example.service package is executed.
+The logAfterMethodExecution method runs after the method execution and logs the returned result.
+--------------------------AOP
+JoinPoint: A point during the execution of a program, such as the execution of a method or the handling of an exception.
 
+Aspect: A class containing cross-cutting concerns (advice) that can be applied at various join points.
+
+Advice: The action taken by an aspect at a particular join point. Spring AOP supports different types of advice:
+    - @Before: Runs before the method execution.
+    - @After: Runs after the method execution.
+    - @AfterReturning: Runs after the method execution only if it completes successfully.
+    - @AfterThrowing: Runs after the method execution only if it exits by throwing an exception.
+    - @Around: Runs before and after the method execution.
+
+Pointcut: A predicate that matches join points. It specifies where advice should be applied. Pointcuts can be defined using expressions or annotations.
+
+Weaving: The process of applying aspects to a target object to create a new proxy object. In Spring AOP, weaving is done at runtime.
 
 
 
