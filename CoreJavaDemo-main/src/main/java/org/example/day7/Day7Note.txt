@@ -120,7 +120,28 @@ class AnotherCLass {
 
 DI (dependency Injection)
 
-
+------------------------ tomcat
+Client (Browser)
+       |
+       v
++----------------+
+|  Coyote        |  <-- HTTP Connector (handles incoming requests)
++----------------+
+       |
+       v
++----------------+
+|  Catalina      |  <-- Servlet Container (manages servlets and JSPs)
++----------------+
+       |
+       v
++----------------+
+|  Jasper        |  <-- JSP Engine (compiles and processes JSP files)
++----------------+
+       |
+       v
++----------------+
+|  Web Apps      |  <-- Context (individual web applications)
++----------------+
 
 
 
