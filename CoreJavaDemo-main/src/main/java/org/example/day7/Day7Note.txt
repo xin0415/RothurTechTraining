@@ -63,6 +63,18 @@ HTTP advanced
         403 forbidden               user doesn't have permission
         404 not found
         500 internal server error
+        200 is OK, the request is success
+        201 is created the request to creation is success
+        202 is Accepted the request has been accepted for processing, but the processing is not complete
+        204 is not content. The server successfully processed the request, but not returning content
+        307 is temporary redirect. The request redirect to another URL
+        301 moved permanently The URL has been changed permanently
+        400 is bad request	the server could not understand the request
+        401 is unauthorized the client must authenticate itself
+        403 is forbidden, the client doesn’t have permission to access
+        404 is page not found, client cannot find the page
+        500 is internal server error, error happens in backend and doesn’t know how to handle
+
 
 
 TCP and UDP,
