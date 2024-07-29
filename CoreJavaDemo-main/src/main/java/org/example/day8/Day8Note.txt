@@ -1,42 +1,96 @@
+Factory Pattern
+Service Locator Pattern
+Strategy design pattern
+Dependency injection
+
 1. types of DI
-    - constructor based DI, recommend, make the unit test easier, inject mock easily
-    - setter based DI: flexible, partially injection
+    - constructor based DI, recommend, make the unit test easier, inject mock easily    - adding @Autowired above constructor, it will load the value inside the constructor first, call service constructor -> controller constructor
+    - setter based DI: flexible, partially injection    -   adding @Autowired above the setter method   -   it will call the default constructor first(controller constructor->service->dao, when call the setter method, loading service setter -> controller setter
     - field based DI: most convenient, prevent cycle dependency issue, not safe
 
-2. ApplicationContext & BeanFactory
+2. ApplicationContext & BeanFactory     -   both interface
+ApplicationContext = IOC container
+ClassPathApplicationContext, FileSystemXmlApplicationContext, AnnotationConifgWebApplicationContext - these three classes implements ApplicationContext
+
+XmlBeanFactory is class which implements BeanFactory interface
 
 3. Bean Scope
-	- singleton (default)
-	- prototype 
-	- request
-	- session
-	- application
+	- singleton (default): create one bean for each container
+	- prototype : everytime we do DI, create new
+	- request: create bean for each request, bean destroy after request completed
+	- session: create bean for each session, bean destroy after session closed
+	- application: one instance for whole application
+singleton vs application: one application may contain multiple applicationContext that means have multiple containers
 
 4. Bean Life Cycle
-	- @PostConstruct
+	- @PostConstruct        -   call custom init-method
 	- @PreDestroy
 
+// it will apply this logic into call custom init-method if you defines below method
         @PostConstruct
         Public void customInit() {
             // custom logic
         }
 
 5. AOP
-    Aspect: cut across concern,
+    Aspect: cut across concern,     - for example, log is concern (check image in resources)
         Logging, Security, Transaction
-        @Aspect
+        @Aspect     -   used for create aspect class
     Advice:
         before, after, after return, after throwing, around
+        before the method, after the method, around is both before and after
     Join Point: a point during the execution of a program
     Pointcut: predicate that matches joinpoints, expression
-    Target: where we add the AOP logic
+    Target: where we add the AOP logic  -   for example, payment method, shipment method and refund method are target
 
     AOP -> Dynamic Proxy -> Reflection
+    AOP base on Dynamic Proxy design pattern, Dynamic Proxy base on Reflection
+
+for AOP class
+you need to create pointcut first
+@Pointcut
+then you can use @Before, @After, ...
+
+ // first * means return data type
+    // second * means all classes in the controller package
+    // third * means all the methods in each class
+    // .. means all arguments
+//    @Pointcut("execution(* com.example.aop.springaop.controller.*.*(..))")    - method level match
+
+    // within used to find all the classes and methods under a package  - package level match
+//    @Pointcut("within(com.example.aop.springaop..*)")
+
+    // this is class level match if you want to match specific class
+//    @Pointcut("this(com.example.aop.springaop.service.DepartmentService)")
+
+    // monitor specific annotation
 
 
+public class Service1{
+    public void payment(){
+        // log before
+        // business logic
+        // log after
+    }
+}
+public class Service2{
+    public void shipment(){
+        // log before
+        // business logic
+        // log after
+    }
+}
+public class Service3{
+    public void refund(){
+        // log before
+        // business logic
+        // log after
+    }
+}
 
-
-
+@Table tell the hibernate this class map to the table to database
+@Data = getter + setter
+@GeneratedValue to create id value
 
 
 

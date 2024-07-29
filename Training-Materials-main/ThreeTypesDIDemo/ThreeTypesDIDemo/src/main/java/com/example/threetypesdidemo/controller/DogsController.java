@@ -18,12 +18,14 @@ public class DogsController {
     }
 
 
+    //@Autowired      // if used @Autowired, it will call the DogService constructor first
     public DogsController(DogsService service) {
         System.out.println("DogsController arg constructor called");
         this.service = service;
     }
 
 
+    //@Autowired
     public void setService(DogsService service) {
         System.out.println("DogsController setter called");
         this.service = service;

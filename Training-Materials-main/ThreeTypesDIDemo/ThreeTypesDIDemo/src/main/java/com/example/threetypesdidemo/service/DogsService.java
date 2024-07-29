@@ -24,6 +24,7 @@ public class DogsService {
     }
 
 
+    //@Autowired
     public void setRepository(DogsRepository repository) {
         System.out.println("DogsService setter called");
         this.repository = repository;
