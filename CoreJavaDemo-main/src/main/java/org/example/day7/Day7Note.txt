@@ -212,7 +212,10 @@ Advice: The action taken by an aspect at a particular join point. Spring AOP sup
 Pointcut: A predicate that matches join points. It specifies where advice should be applied. Pointcuts can be defined using expressions or annotations.
 
 Weaving: The process of applying aspects to a target object to create a new proxy object. In Spring AOP, weaving is done at runtime.
-
+------------------------
+Rest vs Soap
+GraphQL
+point cut
 
 
 

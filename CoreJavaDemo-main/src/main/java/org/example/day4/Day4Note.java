@@ -22,6 +22,8 @@ public class Day4Note {
         Character[] array = new Character[] {'a', 'a', 'b', 'c'};
         Map<Character, Integer> map = Arrays.stream(array).collect(Collectors.toMap(c -> c, c-> 1, (a, b)-> a+b));
         Map<Character, Integer> map = Arrays.stream(array).collect(Collectors.groupingBy(c-> c, Collectors.summingInt(e -> 1)));
+        pros: thread safe, lazy loading
+        cons: hard to readable and hard to debug
 
 
 2, Multi-threading
