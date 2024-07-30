@@ -8,11 +8,30 @@ Dependency injection
     - setter based DI: flexible, partially injection    -   adding @Autowired above the setter method   -   it will call the default constructor first(controller constructor->service->dao, when call the setter method, loading service setter -> controller setter
     - field based DI: most convenient, prevent cycle dependency issue, not safe
 
+constructor based DI:
+	Pros: Immutable dependencies, easy to understand and suitable for mandatory dependencies
+	Cons: Can lead to constructors with many parameters
+Setter based DI:
+	Pros: Flexible, suitable for optional dependencies, and allows changing dependencies post-construction
+	Cons: Can lead to partially initialized objects if setters are not called
+Field base DI:
+	Pros: Reduces boilerplate code, simple to use
+	Cons: dependencies are not visible in the constructor, making the class harder to test and understand. Also, field injection cannot be used with final fields
+
+
+
 2. ApplicationContext & BeanFactory     -   both interface
 ApplicationContext = IOC container
 ClassPathApplicationContext, FileSystemXmlApplicationContext, AnnotationConifgWebApplicationContext - these three classes implements ApplicationContext
 
 XmlBeanFactory is class which implements BeanFactory interface
+ApplicationContext and BeanFactory are both interfaces.
+ApplicationContext extends BeanFactory
+ApplicationContext will pre-instantiate all of the singleton beans
+ApplicationContext supports Annotation based dependency injection
+BeanFactory supports dependency injection, but it doesn’t support annotations like @Autowird, @Component, @Service, @Repository and @Controller
+
+
 
 3. Bean Scope
 	- singleton (default): create one bean for each container
@@ -36,12 +55,12 @@ singleton vs application: one application may contain multiple applicationContex
     Aspect: cut across concern,     - for example, log is concern (check image in resources)
         Logging, Security, Transaction
         @Aspect     -   used for create aspect class
-    Advice:
+    Advice: is the action taken by an aspect at a particular join point
         before, after, after return, after throwing, around
         before the method, after the method, around is both before and after
-    Join Point: a point during the execution of a program
-    Pointcut: predicate that matches joinpoints, expression
-    Target: where we add the AOP logic  -   for example, payment method, shipment method and refund method are target
+    Join Point: a point during the execution of a program, such as the execution of a method or the handling of an exception. it represents a point where an aspect can be applied
+    Pointcut: predicate that matches joinpoints, expression that matches join points. It defines where advice should be applied, specifying which methods or executions the aspect should be woven into
+    Target: where we add the AOP logic  -   for example, payment method, shipment method and refund method are target   -   The target is the object being advised by one or more aspects. It is the object upon which the join points are being applied.
 
     AOP -> Dynamic Proxy -> Reflection
     AOP base on Dynamic Proxy design pattern, Dynamic Proxy base on Reflection

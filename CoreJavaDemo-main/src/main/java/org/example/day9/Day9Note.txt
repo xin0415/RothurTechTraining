@@ -12,7 +12,29 @@ xml
         - dependency management - starter   - spring boot will handle dependency for us
         - embedded Server -> Tomcat (default)
         - annotation based  - don't need to write xml anymore, everything can be done by annotation
+        - starter
+        - rapid development: Spring Boot simplifies the setup and development process, allowing developers to get started quickly with minimal configuration.
+        - Microservice Support: Spring Boot is well-suited for developing microservices due to its lightweight nature and ability to start quickly.
         - 。。。
+    Cons for Spring Boot:
+        - Hidden Complexity: Can hide complexity, making it harder to understand the inner workings.
+            * While Spring Boot simplifies development, it can hide much of the complexity, making it harder for developers to understand what is happening under the hood.
+            * Debugging auto-configuration issues can be challenging.
+        - Resource Consumption: Increased resource consumption due to embedded servers and additional features.
+            * Embedded servers and additional features can increase the resource consumption of the application.
+            * Not always the best choice for lightweight applications where resource usage is a critical concern.
+        - Learning Curve: Steep learning curve for new developers.
+            * Although it simplifies Spring development, there is still a learning curve, especially for developers new to the Spring ecosystem.
+            * Understanding the underlying Spring framework concepts is still necessary for more advanced configurations.
+        - Limited Flexibility in some area: Limited flexibility in some areas requiring manual configuration.
+            * The auto-configuration and conventions might not cover all use cases, requiring manual configuration in some scenarios.
+            * Customizing certain aspects of the application can sometimes be cumbersome due to the automatic configurations provided by Spring Boot.
+        - Potential for Bloat: Potential for application bloat.
+            * Spring Boot’s ease of use can lead to including unnecessary dependencies, which can bloat the application.
+            * Developers need to be mindful of the dependencies they include to avoid an overly large and complex application.
+        - Version Compatibility: Version compatibility management can be challenging.
+            * Ensuring compatibility between Spring Boot and other libraries or frameworks can sometimes be challenging.
+            * Keeping up with updates and changes in Spring Boot can require continuous learning and adaptation.
 
 3. RESTFul API Design
     get, post, put, delete, patch
@@ -45,6 +67,12 @@ tid: ticket id, mid: message id
 
 @Controller, @Service and @Repository contains @Component
 4. Spring Boot rest
+    @RequestMapping in Spring MVC for handling HTTP requests. It is used to map web requests to specific handler classes or methods. This annotation can be applied at both the class and the method
+        1. At the Class Level
+            When used at the class level, @RequestMapping defines a base URL for all request mappings in the controller. This base URL is combined with method-level mappings to form the complete URL for handling requests.
+        2. At the Method Level
+            When used at the method level, @RequestMapping specifies the URL pattern that the method should handle. You can also specify HTTP request methods, headers, parameters, and other properties.
+
     @RequestBody: json -> java object
     @ResponseBody: java object -> json
     @Controller vs @RestController, @Service, @Repository
@@ -56,5 +84,137 @@ tid: ticket id, mid: message id
                                                          @RequestParam(required = false, defaultValue = "200") Integer to)
     /students??from=10&to=30
 
+@PathVariable
+	Used to extract values from URL path
+	In the URL http://localhost:8080/api/user/123, the value 123 is part of the path.
+	@GetMapping("/user/{id}")
+    public ResponseEntity<String> getUserById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok("User ID: " + id);
+    }
+@RequestParam
+	Used to extract query parameters from the URL
+	http://localhost:8080/api/user?id=123, the value 123 is part of the query string.
+	public ResponseEntity<String> getUserById(@RequestParam("id") Long id) {
+        return ResponseEntity.ok("User ID: " + id);
+    }
+Spring Boot Actuator: Spring Boot Actuator provides a set of production-ready features that help you monitor and manage your application.
+With Actuator, you can add several useful endpoints to your application, allowing you to check various metrics, system health, environment properties, and more.
+    Health Checks: Provides information about the health of your application.
+    Metrics: Exposes various metrics related to your application.
+    Environment Information: Provides details about the application's environment and configurations.
+    Application Info: Displays information such as build and version details.
+    HTTP Tracing: Tracks HTTP requests and responses.
+    Custom Endpoints: Allows you to create your own custom actuator endpoints.
+
+
+Asynchronous processing in a Spring Boot application can be achieved using the @Async annotation and the TaskExecutor interface. This allows you to run methods asynchronously, enabling better scalability and performance, especially for long-running tasks.\
+------------------------------------------------------------Enable Async Support
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+@Configuration
+@EnableAsync
+public class AsyncConfig {
+    // Additional configuration if needed
+}
+------------------------------------------------------------Define an Async Method
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AsyncService {
+
+    @Async
+    public void asyncMethod() {
+        try {
+            // Simulate a long-running task
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        System.out.println("Async method execution complete");
+    }
+}
+
+------------------------------------------------------------Call the Async Method
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MyController {
+
+    @Autowired
+    private AsyncService asyncService;
+
+    @GetMapping("/start-async")
+    public String startAsync() {
+        asyncService.asyncMethod();
+        return "Async method called";
+    }
+}
+
+------------------------------------------------------------Configure a Task Executor (Optional)
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+@Configuration
+public class AsyncConfig {
+
+    @Bean
+    public TaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(25);
+        executor.setThreadNamePrefix("Async-");
+        executor.initialize();
+        return executor;
+    }
+}
+
+------------------------------------------------------------Handling Async Results with @Async and CompletableFuture
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
+
+@Service
+public class AsyncService {
+
+    @Async
+    public CompletableFuture<String> asyncMethodWithResult() {
+        try {
+            // Simulate a long-running task
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return CompletableFuture.completedFuture("Async method execution complete with result");
+    }
+}
+
+------------------------------------------------------------Then you can call this method and handle the result:
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.CompletableFuture;
+
+@RestController
+public class MyController {
+
+    @Autowired
+    private AsyncService asyncService;
+
+    @GetMapping("/start-async-with-result")
+    public CompletableFuture<String> startAsyncWithResult() {
+        return asyncService.asyncMethodWithResult();
+    }
+}
+
+------------------------------------------------------------
 
 
