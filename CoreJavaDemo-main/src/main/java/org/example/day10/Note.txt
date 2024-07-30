@@ -1,6 +1,6 @@
 
 1. Exception handling
-    - @ExceptionHandler local   - current controller class
+    - @ExceptionHandler local   - define the method in the current controller class
     - @ControllerAdvice global  - to find controllerAdvice class
     - @ResponseStatus -> ResponseStatusExceptionResolver class  - find class which define @ResponseStatus, if found, used ResponseStatusExceptionResolver to handle
     - DefaultHandlerExceptionResolver   - if not found, used DefaultHandlerExceptionResolver to handle
@@ -8,13 +8,56 @@
     the class defines @ResponseStatus(value = HttpStatus.NOT_FOUND)
 
 2. Validation
-    - @NotNull, @NotBlank, @Min, @Max, @Pattern(regex), @Email....
+    - @NotNull, @NotBlank, @Min, @Max, @Pattern(regex), @Email....  in model
     - @Validated    -   used this annotation in controller to apply the validation  (from Spring)
 
     @Valid  -   used to valid parameter in method argument (from JavaEE)
     @Notnull means can be empty "", but cannot be null  - it doesn't check if string is empty
     @NotBlank means cannot be empty, blank - "", not null and not empty
 
+    @Valid:
+        - Used to trigger validation on a single object.
+        - Commonly used in Spring MVC controller method parameters.
+        - Part of the standard Java Bean Validation (JSR 380).
+    @Validated:
+        - A Spring-specific variant of @Valid.
+        - Can be used to trigger validation on a single object or a group of objects.
+        - Commonly used in the service layer or at the class level for validation groups.
+-----------------------------------------------------------------
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+public class User {
+
+    public interface Create {}
+    public interface Update {}
+
+    @NotNull(groups = Create.class)
+    private Long id;
+
+    @NotNull
+    @Size(min = 2, max = 30, groups = {Create.class, Update.class})
+    private String name;
+
+    // getters and setters
+}
+------------------------------------------------------------------------
+import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Service;
+
+@Service
+@Validated
+public class UserService {
+
+    public void createUser(@Validated(User.Create.class) User user) {
+        // Custom logic for creating the user
+    }
+
+    public void updateUser(@Validated(User.Update.class) User user) {
+        // Custom logic for updating the user
+    }
+}
+------------------------------------------------------------------------
 3. Cache
     cache miss/ cache hit
     @EnableCache, @Cacheable
@@ -113,6 +156,17 @@ id  age
 
         AP: Dynamo, Cassandra, CouchDB, Riak, SimpleDB,,,
         CP: MongoDB, BigTable, HBase, Redis, Hypertable....
+
+    ACID:
+        Atomicity: Atomicity ensures that a transaction is treated as a single, indivisible unit of work. This means that all the operations within a transaction must either be completed successfully or none of them should be executed.
+        Consistency: Consistency ensures that a transaction brings the database from one valid state to another valid state, maintaining the integrity of the data according to the defined rules and constraints.
+        Isolation: Isolation ensures that the operations of a transaction are isolated from those of other transactions. This means that intermediate states produced while the transaction is in progress are not visible to other transactions.
+        Durability: Durability ensures that once a transaction has been committed, its changes are permanent and will not be lost, even in the event of a system failure.
+    Atomicity: All or nothing; a transaction is an indivisible unit.
+    Consistency: Transactions transform the database from one valid state to another.
+    Isolation: Transactions are independent and do not interfere with each other.
+    Durability: Committed transactions are permanent and survive system failures
+
 
 6. Difference between sql and no-sql database
 scaling is store data into database, some day database cannot fix database anymore, you need to skill the database
