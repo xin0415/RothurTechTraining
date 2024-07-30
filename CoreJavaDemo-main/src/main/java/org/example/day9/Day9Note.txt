@@ -8,14 +8,19 @@ xml
 
 2. Spring Boot
     why
-        - autoconfiguration
-        - dependency management - starter
+        - autoconfiguration     -   automatically configures your Spring application based on the dependencies present on the classpath and the beans you have defined. This means that you don't have to write a lot of configuration code to get your application up and running.
+        - dependency management - starter   - spring boot will handle dependency for us
         - embedded Server -> Tomcat (default)
-        - annotation based
+        - annotation based  - don't need to write xml anymore, everything can be done by annotation
         - 。。。
 
 3. RESTFul API Design
     get, post, put, delete, patch
+    get: read                |   safe    |     idempotent      |    cacheable      |            get is safe, so it is cacheable, this setup can be changed
+    post: create             | not safe  |  not idempotent     |   not cacheable   |
+    put: whole update        | not safe  |     idempotent      |   not cacheable   |
+    delete: remove           | not safe  |     idempotent      |   not cacheable   |            is will leave database empty, so it is idempotent
+    patch: partial update    | not safe  |  not idempotent (can be) |   not cacheable   |       patch will flexibility, you don't need pass whole object, we can also pass operation {operation:"add", targetField:age} to cause patch is not idempotent
     Http status code: 200, 201, 202, 204, 301, 307, 400, 401, 403, 404, 500
     url design
         get:    /tickets        get all the tickets
@@ -25,6 +30,7 @@ xml
         patch:  /tickets/id     partially update
         delete: /tickets/id     delete
 
+tid: ticket id, mid: message id
         get:    /tickets/id/messages        get all the message for a specific tickets
         get:    /tickets/tid/messages/mid
         post:   /tickets/tid/messages
@@ -37,13 +43,18 @@ xml
     search: get     /tickets?q=java
        get /tickets?q=java&sort=priority&state=open
 
-
+@Controller, @Service and @Repository contains @Component
 4. Spring Boot rest
     @RequestBody: json -> java object
     @ResponseBody: java object -> json
     @Controller vs @RestController, @Service, @Repository
-    @GetMapping,  @PostMapping, @PutMapping, @DeleteMapping, @RequestMapping
+    @GetMapping,  @PostMapping, @PutMapping, @DeleteMapping, @RequestMapping            @RequestMapping(value = "/students/{id}", method = RequestMethod.GET)
     @PathVariable, @RequestParam
+
+    @GetMapping("/students")
+    public ResponseEntity<?> getStudentsByAgeBetween(@RequestParam(required = false, defaultValue = "0") Integer from,
+                                                         @RequestParam(required = false, defaultValue = "200") Integer to)
+    /students??from=10&to=30
 
 
 

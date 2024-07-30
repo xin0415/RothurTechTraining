@@ -1,69 +1,131 @@
 
 1. Exception handling
-    - @ExceptionHandler local
-    - @ControllerAdvice global
-    - @ResponseStatus -> ResponseStatusExceptionResolver class
-    - DefaultHandlerExceptionResolver
+    - @ExceptionHandler local   - current controller class
+    - @ControllerAdvice global  - to find controllerAdvice class
+    - @ResponseStatus -> ResponseStatusExceptionResolver class  - find class which define @ResponseStatus, if found, used ResponseStatusExceptionResolver to handle
+    - DefaultHandlerExceptionResolver   - if not found, used DefaultHandlerExceptionResolver to handle
+
+    the class defines @ResponseStatus(value = HttpStatus.NOT_FOUND)
 
 2. Validation
     - @NotNull, @NotBlank, @Min, @Max, @Pattern(regex), @Email....
-    - @Validated
+    - @Validated    -   used this annotation in controller to apply the validation  (from Spring)
+
+    @Valid  -   used to valid parameter in method argument (from JavaEE)
+    @Notnull means can be empty "", but cannot be null  - it doesn't check if string is empty
+    @NotBlank means cannot be empty, blank - "", not null and not empty
 
 3. Cache
     cache miss/ cache hit
     @EnableCache, @Cacheable
     CacheManager
 
+    CacheManager: //    the default cache manager is ConcurrentMapCacheManager, which internally is a ConcurrentHashMap
+                     @Bean
+                     public CacheManager cacheManager() {
+                         return new ConcurrentMapCacheManager("books");
+                     }
+    @EnableCache    used in the main class
+    @Cacheable      used in the method
+    cache miss  -   server cannot find data in cache, read from database
+    cache hit   -   read data from cache
+
     Eviction Policy
     - lru, least recent used, LinkedHashMap, (LinkedList + HashMap)
+        cache size 3
+        -> d3 d2 d1 ->      if d4 comes, it will remove oldest one
+        -> d4 d3 d2 ->      if you used d3 in the request
+        -> d3 d4 d2 ->
+
+    consistence
+    available
+
     - lfu, least frequent used
     - no-eviction
-    - random
-    - most recently used
+    - random    -   random remove data from cache
+    - most recently used    - remove most recently used cache
+        -> d1 d2 d3 ->  if d4 comes, cache is full, drop d4
+     most recently used
+        move app(m1 m2 m3)
+        move app(m2 m3 m1)
 
 4. Relational Database (sql database)
     database,
     DBMS(database management system), MySql, PostgreSQL, SQl Server, Oracle, FileMaker
     SQL (Structured Query Language), select ... from ... where ... group by ... order by,
-        mysql
+        mysql   - get the row from 21-30
             select * from my_table order by name limit 20, 10
         Oracle
             select * from my_table order by name offset 20 rows fetch next 10 rows only;
     database normalization
-        1nf(first norm form): each table cell should contain a single value, each record needs to be unique
-        2nf: follow 1nf, single column primary key
+        not all the normalization is good, normalization form should be defined base on requirement
+        1nf(first norm form): each table cell should contain a single value, each record needs to be unique         for example, a phone has two price in one column that is not allowed
+        2nf: follow 1nf, single column primary key          for example, id column
         3nf: follow 2nf, has no transitive functional dependencies
         de-normalization
 
-5, Non-relational Database (no-sql database)
+if make small table size, you need to use join that make table more complex
+also, join operation is expensive
+
+id  birth_date  age         if you change the birth_date, you need to change age, this is call transitive functional dependencies
+1   01/01/2000  23
+2   02/01/2001  22
+
+create another table to handle age
+id  age
+1   23
+2   22
+
+5, Non-relational Database (no-sql database)    always to optimize requirement for data store
     major categories of non-relational database
-        document data stores, MongoDB, CouchDB
+        1. document data stores, MongoDB, CouchDB                  document data stores means only have key and document, document can be convert to json. In side document is key value pair
             collections -> tables
             documents  -> rows
             fields -> column
-        Columnar (column family) data stores, Cassandra, HBase
-        key-value database: redis, riak
-        Graph data store: Neo4j, GraphDB
+        2. Columnar (column family) data stores, Cassandra, HBase      -can call column family data store
+        3. key-value database: redis, riak
+        4. Graph data store: Neo4j, GraphDB
+
+    Column family data store example
+    CustomerID      Column Family: Identity
+    001             Firstname: any
+                    Lastname: any
+    002             Firstname: any
+                    Lastname: any
+
+
 
     CAP: can't achieve 3 at the same time
-        - Consistency:
-        - Availability
-        - Partition tolerance
+        - Consistency:  all client always has the same data
+        - Availability: each client can always read and write
+        - Partition tolerance: even system breakdown, it will still work
+
+        Consistency: every read receives the most recent writes or an error
+            * Ensures that all nodes see the same data at the same time.
+            * After an update is made, all subsequent reads will reflect that update.
+        Availability: Every request(read or write) receives a response, without guarantee that it contains the most recent write
+            * Guarantees that every request receives a response (success or failure).
+            * The system remains operational, but the data may not be up-to-date.
+        Partition Tolerance: The system continues to operate despite an arbitrary number of message being dropped by the network between nodes
+            * The system continues to function despite network partitions (communication breakdowns between nodes).
+            * The system can handle network failures that prevent some nodes from communicating.
+
 
         AP: Dynamo, Cassandra, CouchDB, Riak, SimpleDB,,,
         CP: MongoDB, BigTable, HBase, Redis, Hypertable....
 
 6. Difference between sql and no-sql database
+scaling is store data into database, some day database cannot fix database anymore, you need to skill the database
     sql
         relational database
-        predefined schema
-        vertical scaling
+        predefined schema   - we already define all the columns
+        vertical scaling: used one machine, adding more memory, cpu, space in to one machine if required    -   cannot use two machine because against 1nf
         ACID
 
     nosql
         non relational database
         dynamic schema
-        horizontal scaling
+        horizontal scaling: you add more machines into your system
         CAP
 
 

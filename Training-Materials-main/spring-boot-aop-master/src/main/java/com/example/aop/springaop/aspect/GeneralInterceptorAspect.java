@@ -13,9 +13,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class GeneralInterceptorAspect {
 
-//    @Pointcut("execution(* com.example.aop.springaop.controller.*.*(..))")
+    // first * means return data type
+    // second * means all classes in the controller package
+    // third * means all the methods in each class
+    // .. means all arguments
+//    @Pointcut("execution(* com.example.aop.springaop.controller.*.*(..))")    - method level match
+
+    // within used to find all the classes and methods under a package  - package level match
 //    @Pointcut("within(com.example.aop.springaop..*)")
+
+    // this is class level match if you want to match specific class
 //    @Pointcut("this(com.example.aop.springaop.service.DepartmentService)")
+
+    // monitor specific annotation
     @Pointcut("@annotation(com.example.aop.springaop.annotation.CustomAnnotation)")
     public void loggingPointCut(){}
 
