@@ -8,7 +8,7 @@ Dependency injection
     - setter based DI: flexible, partially injection    -   adding @Autowired above the setter method   -   it will call the default constructor first(controller constructor->service->dao, when call the setter method, loading service setter -> controller setter
     - field based DI: most convenient, prevent cycle dependency issue, not safe
 
-constructor based DI:
+constructor based DI: final field need to use constructor injection
 	Pros: Immutable dependencies, easy to understand and suitable for mandatory dependencies
 	Cons: Can lead to constructors with many parameters
 Setter based DI:
@@ -60,6 +60,7 @@ singleton vs application: one application may contain multiple applicationContex
         before the method, after the method, around is both before and after
     Join Point: a point during the execution of a program, such as the execution of a method or the handling of an exception. it represents a point where an aspect can be applied
     Pointcut: predicate that matches joinpoints, expression that matches join points. It defines where advice should be applied, specifying which methods or executions the aspect should be woven into
+    Used @PointCut to setup where to point cut
     Target: where we add the AOP logic  -   for example, payment method, shipment method and refund method are target   -   The target is the object being advised by one or more aspects. It is the object upon which the join points are being applied.
 
     AOP -> Dynamic Proxy -> Reflection
