@@ -8,7 +8,7 @@ QA (50%)
 
 select from, where group by, order by.. join..
 
-1. JDBC
+1. JDBC (Java database connectivity)
     steps: connection -> statement -> sql query -> process sql -> close connection/statement
     select, update, insert (whole, partial), delete;
     Atomic transaction, (commit, rollback)
@@ -16,20 +16,84 @@ select from, where group by, order by.. join..
     PreparedStatement -> sql injection
     Statement vs PreparedStatement vs CallableStatement
 
+    Statement
+        - used to execute sinmple SQL queries without parameters
+        -  Generally used for executing static SQL queries, such as DDL (Data Definition Language) statements (e.g., CREATE, ALTER, DROP) and simple DML (Data Manipulation Language) statements (e.g., INSERT, UPDATE, DELETE, SELECT).
+    PreparedStatement
+        - used execute SQL queries with or without parameter
+        - It helps prevent SQL injection attacks by separating SQL logic from data.
+        - Preferred for executing dynamic queries, especially when user input is involved. It also improves performance for repeated execution of the same query with different parameters.
+    CallableStatement
+        - Used to execute stored procedures and functions in the database.
+        - Suitable for executing complex database operations encapsulated within stored procedures or functions. It supports both input and output parameters.
+
+    Feature	                        Statement	        PreparedStatement	    CallableStatement
+    SQL Injection Prevention	        No	                    Yes	                Yes
+    Parameterized Queries	            No	                    Yes	                Yes
+    Precompilation	                    No	                    Yes	                Yes
+    Performance	                   Good for one-time	Better for repeated	    Good for complex
+    Dynamic Queries	                    Yes	                    Yes	                Yes
+    Stored Procedure Support	        No	                    No	                Yes
+
+    Statement:
+        - Best for executing simple, static SQL queries.
+        - No protection against SQL injection.
+        - Compiles SQL query every time it is executed.
+    PreparedStatement:
+        - Suitable for executing dynamic queries and those with parameters.
+        - Provides SQL injection prevention.
+        - Precompiles SQL query, making it more efficient for repeated execution.
+    CallableStatement:
+        - Used for executing stored procedures and functions.
+        - Supports both input and output parameters.
+        - Ideal for encapsulating complex database logic.
+
+    Used PreparedStatement to prevent SQL injection from attacker
+
+    SQL injection: This can allow the attacker to view, modify, or delete data they are not normally able to access.
+    Consequences of SQL Injection
+        - Unauthorized Access: Attackers can gain unauthorized access to user accounts, including administrative accounts.
+        - Data Leakage: Attackers can read sensitive data from the database.
+        - Data Manipulation: Attackers can insert, update, or delete data in the database.
+        - Denial of Service: Attackers can delete entire databases, causing a denial of service.
+        - Privilege Escalation: Attackers can escalate privileges within the database.
+    Preventing SQL Injection
+        - Use Prepared Statements (Parameterized Queries):
+            Ensure that SQL queries are constructed in a way that data is always treated as data and never as executable code.
+            For example, in Java using JDBC:
+                String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+                PreparedStatement pstmt = connection.prepareStatement(query);
+                pstmt.setString(1, username);
+                pstmt.setString(2, password);
+                ResultSet rs = pstmt.executeQuery();
+
+        - Use Stored Procedures: Encapsulate the SQL query logic in stored procedures that are executed on the database server, reducing the risk of SQL injection.
+        - Input Validation: Validate input data to ensure it conforms to expected formats (e.g., using regular expressions).
+            Reject or sanitize any input that does not meet these criteria.
+        - Use ORM Frameworks: Object-Relational Mapping (ORM) frameworks like Hibernate, JPA, or Entity Framework provide APIs that help prevent SQL injection by abstracting the SQL query building process.
+        - Least Privilege Principle: Configure database accounts with the minimum privileges necessary for the application to function.
+        - Escaping User Inputs: If using languages or databases that don't support parameterized queries, ensure that user input is properly escaped before constructing SQL queries.
+        - Security Testing: Regularly test your application for SQL injection vulnerabilities using tools like SQLMap, Burp Suite, or manual testing.
+        - Web Application Firewalls (WAFs): Implement WAFs to detect and block SQL injection attempts.
 2. Hibernate
-    ORM: object relational Mapping
+    ORM: object relational Mapping  - map the sql table to java object
     tool: Hibernate, Sequelize, MyBatis, SqlAlchemy, Doctrine2...
 
-    JPA: java persistence API, specification
+    JPA: java persistence API, specification    - from JavaEE
     Hibernate: implementation
 
     Hibernate Architecture
+    Hibernate will build session factory based on Configuration file
+    Session Factory will generate session for application
+    session will manage the java object
+    session will generate the query for sql
+    query will execute the database
 
     Entity LifeCycle
         Transient
-        Persistent
-        Detached
-        Removed
+        Persistent: manage by the session and will change in database
+        Detached: object is not longer attach to the session
+        Removed: previously object attach to the session, but the object is removed currently and also remove from database
 
     Mapping
         OneToOne
@@ -41,21 +105,26 @@ select from, where group by, order by.. join..
     OneToMany: Employee <-> Accounts
     OneToOne: Husband <-> Wife
 
+    You can use @JoinTable to create many-to-many and one-to-many relationship
+    one to many can also use @OneToMany with @JoinColumn to create foreign key
+    one-to-one used @OneToOne and @JoinColumn
+    @JoinTable will create another table
+
     Cascade Type
-        Persist
-        Merge (update database with new entity)
-        Refresh (opposite with merge)
-        Remove
-        Detach
-        All
+        Persist: used to save
+        Merge (update database with new entity): update
+        Refresh (opposite with merge): will update object in current row in database
+        Remove: removed
+        Detach: detach
+        All: whenever you do any operation, it will cascade to relate object
 
     Fetch type
         Lazy loading
         Eager loading
 
-       OneToOne: default eager
+       OneToOne: default eager          - load the single object is eager
        ManyToOne: eager
-       OneToMany: lazy
+       OneToMany: lazy                  - load collection is lazy
        ManyToMany: lazy
 
     First Level Cache/ Second Level Cache
@@ -67,14 +136,18 @@ select from, where group by, order by.. join..
             global
             second Level
 
+    you may have multiple session, each session will create own first level cache
+
         EhCache, -> OSCache, Redis...
+
+    hibernate default use EhCache, can change to OSCache, Redis ...
 
     query:
         criteria Queries: https://howtodoinjava.com/hibernate/hibernate-criteria-queries-tutorial/
         HQL: https://howtodoinjava.com/hibernate/complete-hibernate-query-language-hql-tutorial/
         Native query
 
-
+jdbc -> hibernate -> spring data JPA
 
 
 
