@@ -17,7 +17,7 @@ select from, where group by, order by.. join..
     Statement vs PreparedStatement vs CallableStatement
 
     Statement
-        - used to execute sinmple SQL queries without parameters
+        - used to execute simple SQL queries without parameters
         -  Generally used for executing static SQL queries, such as DDL (Data Definition Language) statements (e.g., CREATE, ALTER, DROP) and simple DML (Data Manipulation Language) statements (e.g., INSERT, UPDATE, DELETE, SELECT).
     PreparedStatement
         - used execute SQL queries with or without parameter
@@ -95,11 +95,24 @@ select from, where group by, order by.. join..
         Detached: object is not longer attach to the session
         Removed: previously object attach to the session, but the object is removed currently and also remove from database
 
+    New/Transient: An entity is in the transient state when it has been instantiated but is not yet associated with a persistence context. This means it is not yet stored in the database.
+    Managed/Persistent: An entity is in the persistent state when it is associated with a persistence context and is being tracked by the EntityManager. Persistent entities have a corresponding record in the database.
+    Detached: An entity is in the detached state when it was once associated with a persistence context but is no longer managed by any persistence context. This can happen, for example, when the EntityManager is closed or when an entity is explicitly detached.
+    Removed: An entity is in the removed state when it has been marked for deletion from the database.
+
+
     Mapping
         OneToOne
         ManyToOne
         OneToMany
         ManyToMany
+
+    One-to-one is one entity is associated with exactly one instance of another entity
+    One-to-many is where one entity is associated with multiple instances of another entity
+    Many-to-one is the inverse of one-to-many, where multiple instances of one entity are associated with a single instance of another entity
+    Many-to-many is where multiple instances of one entity are associated with multiple instances of another entity
+
+
 
     ManyToMany: Reader <-> subscription
     OneToMany: Employee <-> Accounts
@@ -116,8 +129,30 @@ select from, where group by, order by.. join..
         Refresh (opposite with merge): will update object in current row in database
         Remove: removed
         Detach: detach
-        All: whenever you do any operation, it will cascade to relate object
+        All: whenever you do any operation, it will cascade to relate object (persist, merge, remove, refresh, detach)
 
+    Cascade types define how operations performed on the parent entity are propagated to the related entities.
+    ALL: When any of the operations is performed on the parent entity, it is automatically propagated to all its associated child entities.
+    PERSIST: When the parent entity is persisted, all its associated child entities will also be persisted automatically.
+    MERGE: When the parent entity is merged, all its associated child entities will also be merged automatically.           // This means that if the parent entity and its child entities are detached and then merged, both the parent and its children will be reattached to the persistence context, and any changes made to them will be synchronized with the database.
+    REMOVE: When the parent entity is removed, all its associated child entities will also be removed automatically.
+    REFRESH: When the parent entity is refreshed, all its associated child entities will also be refreshed automatically.   // This means that if the parent entity and its child entities have been modified in memory and you invoke refresh on the parent, the state of both the parent and the children will be reloaded from the database, discarding any unsaved changes.
+    DETACH: When the parent entity is detached, all its associated child entities will also be detached automatically.
+
+    Key Differences Between CascadeType.MERGE and CascadeType.REFRESH
+    State Propagation:
+        CascadeType.MERGE: Copies the state of detached entities to managed instances in the persistence context. If the entity is not managed, a new managed instance is created.
+        CascadeType.REFRESH: Reloads the state of managed entities from the database, discarding any unsaved changes.
+    Use Case:
+        CascadeType.MERGE: Used when you want to reattach detached entities to the persistence context and propagate their changes to the database.
+        CascadeType.REFRESH: Used when you want to synchronize the state of managed entities with the database, discarding any unsaved in-memory changes.
+    Summary
+    Use CascadeType.MERGE when you want to propagate the merge operation from a parent entity to its child entities, ensuring that changes to both are saved to the database.
+    Use CascadeType.REFRESH when you want to propagate the refresh operation from a parent entity to its child entities, ensuring that both are synchronized with the current state in the database, discarding unsaved changes.
+
+
+    Eager Fetching is related entities are fetched immediately along with the query of the owning entity
+    Lazy Fetching is related entities are fetched on demand, for example, when the relationship is accessed for the first time
     Fetch type
         Lazy loading
         Eager loading
@@ -149,15 +184,84 @@ select from, where group by, order by.. join..
 
 jdbc -> hibernate -> spring data JPA
 
+Feature	                                JDBC	                                Hibernate
+Level of Abstraction	            Low-level	                                High-level
+API Type	                        Procedural	                            Object-Oriented
+SQL Writing	                    Direct SQL writing required	                HQL (Hibernate Query Language)
+Performance	                Generally faster for simple queries	            May have overhead due to abstraction
+Connection Management	                Manual	                                Automatic
+Caching	                        No built-in caching	                        Built-in first and second-level caching
+Schema Generation	                    Manual	                                Automatic
+Object-Relational Mapping	            No	                                    Yes
+Learning Curve	                Easier for SQL developers	                Steeper due to ORM concepts
+Relationships Handling	        Manual handling in SQL	                    Automatic handling with annotations
+Suitable for	            Simple, low-level database interactions	        Complex, object-oriented applications
 
+Pros and Cons
+JDBC Pros:
+    Full control over SQL execution.
+    Better performance for simple queries.
+    Easier to learn for developers familiar with SQL.
+JDBC Cons:
+    Requires manual handling of connections and resources.
+    More boilerplate code.
+    Harder to manage complex relationships.
 
+Hibernate Pros:
+    Simplifies database interactions with ORM.
+    Reduces boilerplate code.
+    Supports advanced features like caching, schema generation, and relationship management.
+Hibernate Cons:
+    Additional learning curve due to ORM concepts.
+    May introduce performance overhead.
+    Debugging can be more complex.
+When to Use
+JDBC: Use when you need full control over SQL execution, performance is critical for simple queries, or you have a small project with straightforward database interactions.
+Hibernate: Use when working on complex applications with many entities and relationships, you prefer working with objects rather than SQL, or you need features like caching and automatic schema generation.
 
+--------------------------------------------------JPA and Hibernate
+Feature	                                    JPA	                                            Hibernate
+Type	                                Specification	                            ORM Framework and JPA Provider
+Implementation	                    No (specification only)	                Yes (implements JPA and provides extra features)
+Standardization	                            Yes	                                    No (Hibernate-specific features)
+API	                                EntityManager, JPQL	                        Session, HQL (Hibernate-specific), JPQL
+Portability	                        High (can switch providers)	            Lower (Hibernate-specific features may reduce portability)
+Configuration	                        Annotations, XML	                            Annotations, XML
+Additional Features	                None (specification only)	            Yes (e.g., better caching, custom types)
+Automatic Schema Generation	                Yes	                                                Yes
+Learning Curve	                        Depends on provider	                    Steeper (due to additional features)
+Query Language	                            JPQL	                                        JPQL, HQL
 
+JPA Pros:
+    Standardized API for ORM.
+    Portable across different JPA providers.
+    Simple and easy to learn for basic ORM tasks.
+    Integrates well with Java EE.
+JPA Cons:
+    Limited to features defined by the specification.
+    May require switching to provider-specific features for advanced use cases.
 
+Hibernate Pros:
+    Rich feature set beyond JPA specification.
+    Mature and widely used in the industry.
+    Strong community support and extensive documentation.
+    Provides advanced caching, custom types, and other performance optimizations.
+Hibernate Cons:
+    More complex due to additional features.
+    Can lead to vendor lock-in if Hibernate-specific features are heavily used.
+    Steeper learning curve compared to plain JPA.
+When to Use
+JPA: Use JPA when you need a standardized, portable ORM solution that can work with multiple JPA providers. It's ideal for applications that need to be flexible and adaptable to different ORM frameworks.
+Hibernate: Use Hibernate when you need advanced ORM features and optimizations that go beyond the JPA specification. It's suitable for complex applications where performance and flexibility are critical, and where you can take advantage of Hibernate's additional capabilities.
 
+Union: Combines the results of two or more select queries and removes duplicate rows from the result set.
+Union ALL: Combines the results of two or more Select queries without removing duplicate rows
 
-
-
+Left join: Returns all rows from the left table, and the matched rows from the right table. If not match is found, NULL values are returned for columns from the right table
+Right join: Returns all rows from the right table, and the matched rows from the left table. If not match is found, NULL values are returned for columns from the left table
+Inner join: returns only the rows that have matching values in both tables
+Outer join: Return all rows when there is a match in either left or right table. Rows without a match in either table will have NULL values for columns of the table that doesn’t have the match (list all the row in left table and right table)
+Cross join: Returns the Cartesian product of the two tables. All possible combinations of rows from the two tables (every employee will be paired with every department, resulting in a very large result set if both tables contain many rows 2X2=4)
 
 
 

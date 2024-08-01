@@ -1,0 +1,54 @@
+@Entity
+public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    // Constructors, getters, setters, etc.
+}
+
+public class EmployeeService {
+    @PersistenceContext
+    private EntityManager em;
+
+    public void createEmployee(String name) {
+        Employee employee = new Employee();
+        employee.setName(name);
+
+        // Employee is in transient state here
+
+        em.persist(employee);
+
+        // Employee is now in persistent state
+    }
+
+    public Employee findEmployee(Long id) {
+        Employee employee = em.find(Employee.class, id);
+
+        // Employee is now in persistent state
+
+        return employee;
+    }
+
+    public void updateEmployee(Long id, String newName) {
+        Employee employee = em.find(Employee.class, id);
+
+        // Employee is in persistent state
+
+        employee.setName(newName);
+
+        // Changes will be automatically synchronized with the database
+    }
+
+    public void removeEmployee(Long id) {
+        Employee employee = em.find(Employee.class, id);
+
+        // Employee is in persistent state
+
+        em.remove(employee);
+
+        // Employee is now in removed state
+    }
+}
