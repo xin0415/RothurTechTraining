@@ -80,7 +80,7 @@ public class Day3Note {
                 throw new RuntimeException(e);
             }
 
-    2. Genertics
+    2. Generics
         Always pass class
         <?>,<A extends B>, <B super A>
             class Node <K, V> {

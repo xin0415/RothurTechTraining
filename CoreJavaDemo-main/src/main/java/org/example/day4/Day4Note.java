@@ -113,7 +113,15 @@ public class Day4Note {
         ExecutorService tp2 = Executors.newSingleThreadExecutor();
         ExecutorService tp3 = Executors.newCachedThreadPool();
         Executors.newScheduledThreadPool(3);
-
+        ExecutorService threadPool = new ThreadPoolExecutor(
+                2,
+                5,
+                2L,
+                TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(4),
+                Executors.defaultThreadFactory(),
+                new ThreadPoolExecutor.DiscardOldestPolicy()
+        );
     }
 }
 

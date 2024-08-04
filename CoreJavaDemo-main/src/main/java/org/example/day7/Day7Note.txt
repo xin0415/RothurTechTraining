@@ -87,9 +87,9 @@ TCP and UDP,
     - SYN-ACK (Synchronize-Acknowledge): the server responds with a SYN-ACK segment to acknowledge the client's request and provide its own synchronization information that has both the SYN and ACK flag set: Server ->Client:[SYN, ACK, Seq =y, Ack=x+1]
     - ACK (Acknowledge): the client send an ACK segment to acknowledge the server's response, completing the handshake: Client -> Server:[ACK,Seq=x+1, Ack=y+1]
     4 way handshaking
-    - FIN (Finish): The initiator sends a FIN segment to singal the termination of the connection: Client -> Server: [FIN, Seq=x]
+    - FIN (Finish): The initiator sends a FIN segment to signal the termination of the connection: Client -> Server: [FIN, Seq=x]
     - ACK (Acknowledge): The receiver responds with an ACK segment to acknowledge the FIN: Server -> Client: [ACK, Seq=y, ACK=x+1]
-    - FIN (Finish): The receiver send its own FIN segment to singal the termination of the connection in the opposite direction: Server -> Client:[FIN seq=z]
+    - FIN (Finish): The receiver send its own FIN segment to signal the termination of the connection in the opposite direction: Server -> Client:[FIN seq=z]
     - ACK (Acknowledge): The initiator responds with an ACK segment to acknowledge the second FIN, completing the termination process: Client->Server:[ACK, Seq=x+1, Ack=z+1]
 
 Session and Cookie
