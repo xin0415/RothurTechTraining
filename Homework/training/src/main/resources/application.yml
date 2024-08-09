@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: training
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ems
+    username: postgres
+    password: chenxin9204
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8080
