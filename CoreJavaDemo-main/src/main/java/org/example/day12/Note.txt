@@ -8,26 +8,26 @@ web application and web service
     web service:
 
 JavaSE: java standard edition
-Java EE: java enterprise edition
+Java EE(known as Jakarta EE): java enterprise edition
 
 2. Evolution of web Architecture
-    Monolithic
+    Monolithic          - From early, they put backend and frontend(HTML files) together as single server, require to stop everything to add/modify the features, then separation into front-back
     front-back separation
-        - way to communicate
-            front end send request to the back for data
+        - two ways to communicate
+            front end send request to the back for data, backend response to the frontend
             web-sockets
-    SOA: service oriented architecture
+    SOA: service oriented architecture          - have middle ware, frontend talk to middle ware, then middle ware talk to backend
         - ESB: Enterprise Service Bus
     Microservice
         each service has its own database
     Micro-Front
-        webpack
+        webpack     - used to combine frontend
 
 3. Communication
     REST: Json, Xml, html...
     SOAP: xml
     RPC: remote procedure call
-    graphQL: pull data from multiple data resource with single API call
+    graphQL: pull data from multiple data resource with single API call         - it will send a request with query as a string inside a JSON Object
 
 
 4. data store
@@ -43,11 +43,11 @@ Java EE: java enterprise edition
 
 6. SOLID
     https://www.digitalocean.com/community/conceptual_articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design#single-responsibility-principle
-    Single Responsibility Principle
-    Open-closed Principle
-    Liskov Substitution Principle
-    Interface Segregation Principle
-    Dependency Inversion Principle
+    Single Responsibility Principle - a class only have one responsibility
+    Open-closed Principle   - open for extension, but close for modify
+    Liskov Substitution Principle   - all the child class can be substitution by parent class
+    Interface Segregation Principle - user can never focus to implement the interface if you don't need, only implement the necessary interface
+    Dependency Inversion Principle  - entity should depend on abstraction, not the concrete class. You can extends abstract class or implement the interface, but you cannot extends the concrete class
 
 7. Microservice Components
     DNS, www.google.com -> 172.253.122.104
@@ -56,20 +56,32 @@ Java EE: java enterprise edition
     cache service
     job queue/ servers
     full text search
-    services
-    data firehose
+    services        - microservices
+    data firehose   - AWS Kinesis: process data     - AWS redshift: data warehouse or S3 bucket to store big data   - data warehouse used to store unprocess or any kind of data into it
     cloud storage
-    CDN
+    CDN - Content Deliver Network - service put the data into CDN, user open the frontend to receive the data from CDN
     ...
 
+Full text search example:
+id  | title
+1   | I like dog
+2   | dogs are cute
+3   | dog food
+it will create below table, when user input text match to below keyword, return ids
+inverted index
+keyword | ids
+dog     | 1 2 3
+cute    | 2
+food    | 3
+
 8. Spring Cloud
-    Config Server: Config server
-    Service Discovery: Eureka, Consoul, Zookeeper...
-    Zipkin and Sleuth: tracing system
+    Config Server: Config server    - used to setup the configuration for server, then server don't need to restart to update the configuration
+    Service Discovery: Eureka, Consoul, Zookeeper...        - heart beats: servers send the heart beats to the discovery service to make sure servers status
+    Zipkin and Sleuth: tracing system   - zipkin tracking servers and generate traceId and SpanId
     Ribbon: client side load balancer
-    ELK: kibana, Logstash, ElasticSearch
-    Circuit Breaker: fall back
-        Hystrix -> Resilience4j
+    ELK (ELK Stack): kibana (used to render data, shows dashboard to user), Logstash (collect data from different microservice), ElasticSearch (process data)
+    Circuit Breaker: fall back      - fault tolerance proxy, server1 send the request, but server2 is down, then it will call backup server or return cache data to user
+        Hystrix (old)-> Resilience4j (now used)
     ...
 
 
