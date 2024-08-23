@@ -15,7 +15,7 @@ import java.util.List;
 
 @SpringBootApplication
 @RestController
-@RefreshScope
+@RefreshScope		// if you have any change, like URL, it required to refresh scope
 public class InsuranceClientApplication {
 
 	@Autowired
