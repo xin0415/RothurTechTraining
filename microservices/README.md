@@ -51,3 +51,12 @@ user-api
  * DevTools
  * Lombok
  * Web
+
+# Sleuth & Zipkin
+/zipkin
+payment-service
+ * Web
+ * Sleuth
+zipkin-server
+ * zipkin
+ * add @EnableZipkinServer in main application
