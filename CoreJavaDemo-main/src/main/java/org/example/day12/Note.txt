@@ -84,6 +84,8 @@ food    | 3
         Hystrix (old)-> Resilience4j (now used)
     ...
 
+    Zuul used for API gateway - setup the routes and redirect to the service to execute request
+
 
 
 

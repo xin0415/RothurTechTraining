@@ -60,3 +60,5 @@ payment-service
 zipkin-server
  * zipkin
  * add @EnableZipkinServer in main application
+
+spring-cloud-zuul-master used to setup API gateway - Zuul used for API gateway - setup the routes and redirect to the service to execute request
