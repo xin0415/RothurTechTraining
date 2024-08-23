@@ -1,3 +1,4 @@
+https://www.youtube.com/watch?v=irBEdp7XlSQ&list=PLVz2XdJiJQxz3L2Onpxbel6r72IDdWrJh&index=2
 # Eureka Example
 /services
 Amazon-server
@@ -34,3 +35,19 @@ insurance-client
  * DevTools
  * Web
  * Config Server
+
+# Ribbon - Load balance
+chatbook
+ * Web
+user-api
+ * DevTools
+ * Web
+ * Ribbon
+ * add @RibbonClient
+
+# Feign
+/feignproject
+ * OpenFeign
+ * DevTools
+ * Lombok
+ * Web
