@@ -1,4 +1,5 @@
 https://www.youtube.com/watch?v=irBEdp7XlSQ&list=PLVz2XdJiJQxz3L2Onpxbel6r72IDdWrJh&index=2
+https://github.com/Java-Techie-jt
 # Eureka Example
 /services
 Amazon-server
@@ -62,3 +63,12 @@ zipkin-server
  * add @EnableZipkinServer in main application
 
 spring-cloud-zuul-master used to setup API gateway - Zuul used for API gateway - setup the routes and redirect to the service to execute request
+spring-cloud-consul-master used to centralize configuration
+
+# Okata | OAuth 2.0
+/oauth2
+aa
+ * Spring Security
+ * Okta
+ * Spring Web Starter
+ * Cloud OAuth 2

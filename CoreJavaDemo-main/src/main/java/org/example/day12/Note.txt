@@ -85,12 +85,23 @@ food    | 3
     ...
 
     Zuul used for API gateway - setup the routes and redirect to the service to execute request
+    Spring cloud consul can used to centralize the configuration
 
+    Circuit Breaker
+    Closed: the circuit is operating normally. Requests are sent to the dependent service, and if the response is successful, everything continues as usual. If failures occur, the circuit breaker counts the failures.
+    Open: if the number of failures exceeds the predefined threshold, the circuit breaker “trips” and enters the Open state. In this state, requests are not sent to the dependent service. Instead, the system may return an error immediately or provide a fallback response.
+    Half-open: After a certain period, the circuit breaker enters a half-open state where it allows a few requests to pass through and checks if the dependent service has recovered. If these requests succeed, the circuit break returns to the Closed state. If they fail, it goes back to the Open state.
 
+what is microservice
+Microservice is architectural way to design our application uniquely with several small modules developed individually, packaged individually, and deployed individually, in individual processes
 
-
-
-
+Drawback Of Monolithic Architecture
+· Performance issue due to huge data
+· Continuous deployment not possible
+· Adopting new technologies will be difficult
+· Overloaded IDE & overloaded web container
+· Exception propagation not proper
+· Code readable is not there
 
 
 
