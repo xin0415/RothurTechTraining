@@ -80,7 +80,7 @@ food    | 3
     Zipkin and Sleuth: tracing system   - zipkin tracking servers and generate traceId and SpanId, sleuth to check traceId and SpanId, Zipkin provide UI to see all the request details
     Ribbon: client side load balancer
     ELK (ELK Stack): kibana (used to render data, shows dashboard to user), Logstash (collect data from different microservice), ElasticSearch (process data)
-    Circuit Breaker: fall back      - fault tolerance proxy, server1 send the request, but server2 is down, then it will call backup server or return cache data to user
+    Circuit Breaker: fall back      - fault tolerance proxy, server1 send the request, but server2 is down, then it will call backup server or return cache data to user (if server is down, invoke fallbackMethod)
         Hystrix (old)-> Resilience4j (now used)
     ...
 
@@ -91,6 +91,10 @@ food    | 3
     Closed: the circuit is operating normally. Requests are sent to the dependent service, and if the response is successful, everything continues as usual. If failures occur, the circuit breaker counts the failures.
     Open: if the number of failures exceeds the predefined threshold, the circuit breaker “trips” and enters the Open state. In this state, requests are not sent to the dependent service. Instead, the system may return an error immediately or provide a fallback response.
     Half-open: After a certain period, the circuit breaker enters a half-open state where it allows a few requests to pass through and checks if the dependent service has recovered. If these requests succeed, the circuit break returns to the Closed state. If they fail, it goes back to the Open state.
+    When project started, the circuit breaker is closed status. When one service(user-service) cannot reach another service(order-service) for a amount of times (rate limiter),when the request failed, the user will receive the response from the fallback method.
+    The circuit breaker change to open status. after amount of time, the circuit breaker change to half open. during this time, if receive the failed response for amount of times, the circuit breaker change to open status. and repeat
+    Until the user receive amount of time success response, the circuit breaker change from half open to closed status
+
 
 what is microservice
 Microservice is architectural way to design our application uniquely with several small modules developed individually, packaged individually, and deployed individually, in individual processes
@@ -107,6 +111,13 @@ What is Spring Cloud Data Flow
 * Spring Cloud Data Flow is a toolkit to build Microservice based Streaming and Batch data processing pipelines
 * The data pipelines consist of Spring Boot apps, built using the Spring Cloud Stream or Spring Cloud Task microservice frameworks
 
+Resilience4J features & modules
+* Circuit Breaker (fault tolerance)
+* Rate Limiter (block too frequent requests)
+* Time Limiter (Set a time limit when calling remote operation)
+* Retry mechanism (Automatically retry a failed remote operation)
+* Bulkhead (Avoid too many concurrent requests)
+* Cache (Store results of costly remote operations)
 
 
 
