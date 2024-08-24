@@ -124,3 +124,12 @@ spring-cloud-stream-example-master
 
 # Spring Cloud Data Flow | Microservice Stream Processing
 spring-cloud-data-flow-example-master
+
+# Spring Cloud Eureka + API Gateway + Spring Cloud Hystrix
+spring-cloud-gatway-hystrix-master
+
+# Spring Cloud Security | OAuth2 Google Sign In using Spring Boot
+spring-sso-google-main.zip
+
+# Resilience4J Circuit Breaker Implementation in Spring boot
+springboot-resilience4j-main
