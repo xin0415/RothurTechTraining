@@ -1,7 +1,7 @@
 OSI Model and TCP/IP Model
     OSI Model
         Open System Interconnection, 7 layer
-            - application layer: Http, FTP, SMTP, DNS
+            - application layer: Http, Https, FTP, SMTP, DNS
             - presentation layer: encryption/decryption
             - session layer: sockets
             - transport layer: TCP and UDP

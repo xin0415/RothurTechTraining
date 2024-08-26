@@ -77,7 +77,7 @@ food    | 3
 8. Spring Cloud
     Config Server: Config server    - used to setup the configuration for server, then server don't need to restart to update the configuration
     Service Discovery: Eureka, Consoul, Zookeeper...        - heart beats: servers send the heart beats to the discovery service to make sure servers status
-    Zipkin and Sleuth: tracing system   - zipkin tracking servers and generate traceId and SpanId, sleuth to check traceId and SpanId, Zipkin provide UI to see all the request details
+    Zipkin and Sleuth: tracing system   - zipkin tracking servers and generate traceId and SpanId, sleuth to check traceId and SpanId, Zipkin provide UI to see all the request details about TraceId and SpanId, it can also collect the log for services
     Ribbon: client side load balancer
     ELK (ELK Stack): kibana (used to render data, shows dashboard to user), Logstash (collect data from different microservice), ElasticSearch (process data)
     Circuit Breaker: fall back      - fault tolerance proxy, server1 send the request, but server2 is down, then it will call backup server or return cache data to user (if server is down, invoke fallbackMethod)
@@ -119,8 +119,7 @@ Resilience4J features & modules
 * Bulkhead (Avoid too many concurrent requests)
 * Cache (Store results of costly remote operations)
 
-
-
+Srping boot Admin server will monitor all the servers
 
 
 

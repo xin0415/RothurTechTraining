@@ -1,17 +1,72 @@
-1. Docker
+ 1. Docker
+ We can use Docker to make code to run everywhere. easy to start up.
 	docker vs VM
 	Dockerfile -> docker image -> docker container
 	Docker Architecture
 		Docker engine
-		docker client
-		docker registries
+		docker client               you can send all the message to docker engine. for example, docker build to build docker image.
+		docker registries           you can your local registries, the default public registries is docker hub. you can also have private docker registries
 
 	docker deployment and orchestration
 		docker plugins
 		docker compose
 		docker swarm
-		k8s
+		k8s     kubernetes
 
 2 AWS
 	see AWS slides
+	auto-scaling is when a server(EC2) is down, it automatically generate a new server to replace the down server
+	EC2 automatically add or remove EC2 instances in response to changing application demand
+	Elastic load balancing is load balancer
+	API gateway can also work as load balancer
+	AWS SNS is Simple Notification Service  - SNS can notify SQS
+	AWS SQS is Simple Queue Service
+	AWS Cloud watch to monitor the budget
+	AWS ECS supports docker containers
+	AWS Elastic Kubernetes Service(EKS) used to run Kubernetes
+	AWS Fargate to deploy the docker
+	AWS ACL (ACLs) (used for subnet) Network access control lists is virtual firewall that control inbound and outbound traffic at the subnet level and used to security the subnet (placed in front of subnet) to define who can access this subnet
+	AWS security groups (used for EC2 instance) is a virtual firewall that controls inbound and outbound traffic for an amazon EC2 instance
+	AWS DynamoDB is noSQL database
+	AWS ElastiCache used for cache
+	IAM user can have different user for AWS account, for development team
+	IAM group can assign users, each group have different permission
+	IAM roles assign permission to application, for example, assign role for EC2 instance
+	IAM policies to define the policies and permission
+	CloudWatch is dashboard to monitor all the AWS usage
 
+
+VM:
+Your need to implement all the memory, storage, core, etc. You need to setup everything for below layers. Also, VM need the guest OS in order to use them
+App: application
+Bins/Libs: make OS works
+Guest OS: can be any OS
+Hypervisor: used to generate different VM
+Host OS: different operation system: mac, windows, linux, redhat, ubuntu
+infrastructure: most basic
+
+Docker:
+all the application will share whole operation system. We don't need predefine how many resource is used for each container
+-------------
+|    App:    |
+| Bins/Libs: |       = container
+-------------
+Docker Engine: host containers
+Host OS: different operation system: mac, windows, linux, redhat, ubuntu
+infrastructure: most basic
+
+docker images                                   - to check docker image in your pc
+docker pull hellow-world                        - to get the image "hello-world" from docker hub - it will check local repository if you have this image. if cannot find in local, it will get the image from docker hub https://hub.docker.com/
+docker run hello-world                          - run the docker image
+docker ps                                       - show all the container running in our operation
+docker ps -a                                    - to show all the details of container and image
+
+terminal will use dockerfile to generate docker image and container
+
+docker engine
+                docker daemon
+      container             image                       registry    - all the images in manage by the registry or call it docker repository
+      container             image
+      container             image
+
+ECS with github: https://www.youtube.com/watch?v=OMn866JBEtQ
