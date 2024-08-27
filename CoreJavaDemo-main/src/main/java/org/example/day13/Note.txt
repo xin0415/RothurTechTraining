@@ -70,3 +70,29 @@ docker engine
       container             image
 
 ECS with github: https://www.youtube.com/watch?v=OMn866JBEtQ
+
+Kubernetes as a platform for automating deployment, scaling, and operations of application containers
+Origin story: Developed by Google, now maintained by the Cloud Native Computing Foundation(CNCF)
+Core Components of Kubernetes
+    - Nodes: Worker machines in Kubernetes
+    - Pods: The smallest deployable units created and managed by Kubernetes
+    - Services: An abstract way to expose an application running on a set of pods
+    - Deployments: Manage the deployment and scaling of a set of Pods
+Key Features of Kubernetes
+    - Automatic bin packing: Efficiently uses resources to run tasks.
+    - Self-healing: Restarts failed containers, replaces and reschedules containers when nodes die.
+    - Horizontal scaling: Scales applications up and down with a simple command or based on CPU usage.
+
+Kubernetes vs Docker Swarm
+    - Simplicity of Docker Swarm vs. the feature-rich and extensive ecosystem of Kubernetes.
+    - Kubernetes offers greater scalability and complexity for managing large-scale applications.
+    - Choice depends on project requirements, scale, and specific needs.
+
+Getting Started with Kubernetes
+    - Initial setup: Minikube for local development, kubectl as the command-line tool for Kubernetes.
+    - Deploying your first app on Kubernetes: Basic steps from containerization to deployment.
+
+Kubernetes in the Real World
+    - Examples of Kubernetes applications in large-scale production environments.
+    - The role of Kubernetes in enabling microservices architecture and cloud-native applications.
+
