@@ -9,10 +9,10 @@ OSI Model and TCP/IP Model
             - data link layer: format of data
             - physical layer: raw bit
     TCP/IP Model
-        - application layer     -   contains application layer, presentation layer, session layer
-        - transport layer       -   transport layer
-        - internet layer        -   network layer
-        - network access layer  -   data link layer and physical layer
+        - application layer     -   contains application layer, presentation layer, session layer   - user request and response from application, HTTP for web browsing, SMTP for email, FTP for file transfer
+        - transport layer       -   transport layer: it ensures reliable data transfers between applications the two main protocols in this layer are TCP and UDP
+        - internet layer        -   network layer: is IOP layer, this handle the addressing and routing of data packets across different networks. The main protocols here are ipv4 and ipv6 which define how data should be packetized addressed transmitted routed and received
+        - network access layer  -   data link layer and physical layer: it manages the physical connection between devices on the same network segment this layer deals with the hardware aspects of network communication including network interface cards and device drivers
 
             client              ---------------------http-------------------------->        server
 web browser/mobile/IOT device   <--------------------http---------------------------
@@ -78,6 +78,8 @@ HTTP advanced
 
 
 TCP and UDP,
+    TCP provides reliable order delivery of data
+    UDP offers faster but less reliable transmission
     TCP - check if receive all the packet       send packets (1-100) to server, but server only receive (1-78,80-100), TCP will resubmit 79 package -lower speed
     UDP - may lost package  - high speed because it doesn't check all the packages are received
     difference

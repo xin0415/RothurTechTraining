@@ -1,3 +1,25 @@
+Jenkins： https://www.youtube.com/watch?v=jbEF3mB7UcU
+Linux command in EC2
+sudo -i         - to root user
+yum install docker
+systemctl start docker      - start docker
+systemctl status docker     - to check if it is active
+docker images           - check docker image
+docker ps               - shows docker container
+docker run -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts      - download and run jenkins image
+pwd                     - current path
+rm fileName             - remove file
+nohup java -jar filename.ar &       - start jar application
+
+create Jenkins pipeline
+Jenkins -> Pipeline
+    build triggers -> build periodically to setup build schedule
+                   -> github hook trigger for GITScm polling -> any user push code into git, Jenkins will triggers to build the code from git
+SCM means source control manage
+Pipeline definition can be put into the git or write script
+    put stage('xxx'){steps{echo 'mean print'}} inside stages
+after create pipeline -> click build now to build the application
+
 1. Environment
 	Dev Env
 		developer, very frequently
@@ -8,18 +30,19 @@
 	User Acceptance Test (UAT)/ Staging/ Pre-prod
 		internal network
 		deploy period month
-	Producet Env:
+	Producet Env: public network
 		release, deploy period month
 
 2 CICD pipeline
+    CD when you have new feature in github, release new feature to the environment directly
 	jenkins
 	Jenkinsfile
 
 3. Monitor
-	Prometheus Server
-	Grafana Server
-	Spring Actuator
-	Expoter /metrics
+	Prometheus Server       - to monitor Spring Actuator and Expoter
+	Grafana Server          - get the data from Prometheus for display, provide dashboard - user will access here to check status - it provide Alert manager
+	Spring Actuator         - to monitor servers status
+	Expoter /metrics        - to monitor database status
 
 4. Agile
 	Team title
@@ -28,7 +51,18 @@
 	Agile tile
 		Scrum Master 
 		Product Owner
-	
+
+	BA: collect all the requirement from customers and tell all teh requirement to developer team, communication between developer and customers.
+	QA (Quality Assurance): tester
+	DBA (database admin): we cannot setup the database by ourself, we need told to DBA
+	DevOps: to handle CICD pipeline
+	Developer:
+	TL （tech leader) or Architect: usually TL will handle the architect
+	manager: product manager
+
+	Scrum Master: lead the process of meeting
+	Product Owner: who own the project (who pay the money)
+
 
 	Agile methodology
 		sprint planning
@@ -36,8 +70,13 @@
 		Sprint retrospective 
 		Daily standup meeting
 
-	
+    Product Backlog is environment, ordered list of what is needed to improve the product and includes the Product Goal
+    Sprint Planning is sprint goal, and what features need to complete
+    Sprint review do presentation what you have done
+	Backlog will put all the tasks that require to complete
+
 	waterfall methodology
+	Requirements -> Design -> implementation -> verification -> maintenance
 		
 	Jira
 
@@ -51,3 +90,9 @@
 		-> 5 + 3 + 5
 
 	team size < = 10
+
+
+Source -> Branch Protection -> Linting -> build -> building image compiling code -> container image -> unit tests -? Code Coverage Check 80-90% (unit tests for 80 or 90% of code)
+PR before developer can merge code into main branch
+Linting check
+then move to build stage

@@ -1,3 +1,4 @@
+
 1. Security
 
 Authentication vs Authorization
@@ -6,11 +7,14 @@ Authentication vs Authorization
 
 Encryption, Hashing, Encoding
 	Encryption
-		symmetric/ 
-		Asymmetric: private, public key
-		algo: AES, 3-DES, SNOW / RSA, 	
+		symmetric/      two keys are same
+		Asymmetric: private, public key         two keys are different
+		algo: AES, 3-DES, SNOW / RSA,
+		symmetric: AES, 3-DES, SNOW
+		Asymmetric: RSA
+
 	Hashing
-		lose the data, one way
+		lose the data, one way          - after hashing data, data cannot go back
 		algo: MD5, SHA...
 		usage: data integration/ password storage / file management
 		rainbow table, salt
@@ -23,37 +27,57 @@ JWT
 
 OAuth 2.0
 	third party validation
+OAuth2 will validate the user information, then send the token to client
+after that, for each request must contain the token
+
+Authentication: LDAP, Microsoft AD (Active Directory)
 
 SSO:
 	single sign on
+login once, then you can access everything. for example, login google email, then you can login to all the software in google don't require to login again
 
 Spring Security
 
 
 Testing
 	developer (JUnit, Mockito)
-		unit test
-		integration test
+		unit test: testing single method or class
+		integration test: link all the components together and testing whole logic
 	Tester(manual tester)/ QA (quality analysis)/ SDET(software development engineer in test)
 		performace test 
 			JMeter: 20-200 ms, qps, concurrent users....
-		smoke test
-		Sanity test
-		regression test
-		Penetration test: white hacker
-		acceptance test: 
+		smoke test: used verify most important function. for example, building youtube, testing primary function for this website
+		Sanity test: new servers, if you add new features into application, you need to check if application is working or not
+		regression test: rerun the previous application testing, to make sure everything work
+		Penetration test: white hacker : people to do some hacker in system to make sure system is working safety
+		acceptance test: do in UAT environment to check application quantity
 Test framework		
 	Junit/Mockito
 		@Test, assertTrue, assertEquals, 
 		@BeforeEach, @BeforeAll, @AfterEach, @AfterAll
 		@SpringBootTest, @Autowired
+    Mockito:
+        @RunWith(MockitoJUnitRunner.class) in front of class or use MockitoAnnotations.openMocks(this); in the method with @BeforeEach
+        @Mock generate mock data
+        @InjectMocks, inject mocks data into service
+        when(xxxx.getName()).thenReturn("xxxx");
 		@Mock, @InjectMocks
-		@Spy
+		@Spy    - used to monitor, used in front of service
+		doReturn("xxx").when(anyService).sayHi(anymethod());
+
+    @BeforeAll: Run before all the test case start, only run once   - setup environment
+    @BeforeEach: Run before each single test start
+    @AfterEach: Run after each single test completed
+    @AfterAll: Run after all the test completed, only run once
+
+put "mvn pmd:pmd" in command line to check port quality
+create file in target/pmd/rulesets/maven-pmd-plugin-default.xml     - check code follow the rule
+find html to display: target/site/pmd.html          to see if any issue or don't follow the rule or unnecessary import
 
 	RestAssured
 
 Test Style
-	TDD: test driven development
+	TDD: test driven development: write the test case first
 	BDD: behavior driven development
 		cucumber/karate
 	
