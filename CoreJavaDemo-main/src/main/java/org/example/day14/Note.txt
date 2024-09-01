@@ -30,7 +30,7 @@ after create pipeline -> click build now to build the application
 	User Acceptance Test (UAT)/ Staging/ Pre-prod
 		internal network
 		deploy period month
-	Producet Env: public network
+	Product Env: public network
 		release, deploy period month
 
 2 CICD pipeline
@@ -92,7 +92,7 @@ after create pipeline -> click build now to build the application
 	team size < = 10
 
 
-Source -> Branch Protection -> Linting -> build -> building image compiling code -> container image -> unit tests -? Code Coverage Check 80-90% (unit tests for 80 or 90% of code)
+Source -> Branch Protection -> Linting -> build -> building image compiling code -> container image -> unit tests -> Code Coverage Check 80-90% (unit tests for 80 or 90% of code)
 PR before developer can merge code into main branch
 Linting check
 then move to build stage

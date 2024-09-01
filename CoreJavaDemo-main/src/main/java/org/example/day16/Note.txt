@@ -1,49 +1,61 @@
-Message System
+ Message System
 	why message system
 	Message System Model
-		Point to point model
-		publish subscribe model
+		Point to point model:       producer -> message queue -> consumer   after customer consume the message, it will send back acknowledge message to message queue. After message queue receive acknowledge, it will delete message
+		each message can only consume by one customer
+
+		publish subscribe model     producer publish topic into mq, consumer will subscribe topic from mq, but message topic in mq won't be deleted. It will delete when it is expired
 	
 	Kafka Architecture
-		producer
+		producer            producer send the message to the leader node
 		consumer
-		broker 
-		topic (partition/replica) leader/follower
-		message (key, value) -> Apache Avro, serialization
-		batch
+		broker              each broker has partition, replica to backup the data, follower will backup data from leader, never put leader and follower in one broker, in case one broker is down
+		topic (partition/replica) leader/follower           topic stored in broker
+		message (key, value) -> Apache Avro for serialization  key is used to local partition (where to store value), we don't send the message directly, we need to serialize the data
+		batch   message don't send to partition directly, it will put into batch first, then producer will send the whole batch to partition, it can improve performance
+		all the consumers in one consumer group will work for similar functionality
+		all the consumers in one consumer group should consume different partition
+		zookeeper help to manage the components in kafka
 	producer
-		if partition, send to partition directly
-		if no partition, if key, module operation -> find the partition number
-		if no partition, if no key, random generate number -> partition
+		if partition, send to partition directly            - if you provide partition number directly, it will send to the partition
+		if no partition, if key, module operation -> find the partition number              - if not partition number, used key for module operation to find the partition number       - key is from message
+		if no partition, if no key, random generate number -> partition                     - if not partition number, if not key, random generate number for module operation to find the partition number. if it receive the message without partition number and key next time, it will increase this random number + 1, then for module operation to find the partition number
+
+
+    producer send data to partition, it doesn't care whether partition receive data or not
+    producer send message to partition leader node, it will set acks =1, after leader node receive and save the data, follower node backup the message from leader node. the leader node will response the acks
 
 		acknowledge
 			acks = 0, don't wait ack
 			acks = 1, wait for ack from leader
 			acks = -1, wait leader and follows backup the data, ISR
 
+
 	Consumer: 
 		offset: consumer record the last reading location
+		for example, you have 10 message in partition 1, consumerA consume 5 data from partition 1, then offset =5, consumerB still want to consume partition 1, it will start from 6 because offset is 5
 
 Project demo
 
 Interview question: 
 	message accumulated in Kafka, consumer can't consume all the data on time, what should you do?
+	we can add more consumer, it can have more consumer to consume the data. or more partition or increase batch size
 	how does Kafka deal with the expired data?
 		log.cleanup.policy=delete
-		log.cleanup.policy=compact
-	data volum in Kafka?
+		log.cleanup.policy=compact                  compact data to clean up data
+	data volume in Kafka?
 		daily total data size: 100 GB
 		each log: 0.5k - 2k (avg 1k)
-		daily log number: 100 Million logs
+		daily log number: 100 Million logs = 10^8
 		every second: 10^8/24/60/60 = 1150 logs/s
 		avg: 1150 log/s
 		highest: 1150 * (2-20)= 2300-23000logs
 		lowest: 50
 		data volume per second: 1MB/s -> 2MB-20MB
 	how to calculate partition number?
-		total throughput: Tt (MB/s)
-		Producer: Tp (MB/s)
-		Consumer: Tc (MB/s)
+		total throughput: Tt (MB/s)         Tt = total throughput
+		Producer: Tp (MB/s)                 Tp = throughput producer
+		Consumer: Tc (MB/s)                 Tc = throughput consumer
 		partition number = Tt / min(Tp, Tc)
 
 		ex:
