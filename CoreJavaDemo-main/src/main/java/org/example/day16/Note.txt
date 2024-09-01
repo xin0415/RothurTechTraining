@@ -67,12 +67,38 @@ Interview question:
 
 RabbitMQ, JMQP, SNS/SQS
 
+Kafka Cluster
+Since Kafka is a distributed system, it act as a cluster. A Kafka cluster consists of a set of brokers. A cluster has a minimum of 3 brokers.
 
+Kafka Broker
+The broker is the Kafka server. It's just a meaningful name given to the Kafka server. And this name makes sense as well because all that Kafka does is act as
+a message broker between producer and consumer.
+The producer and consumer don't interact directly. They use Kafka server as an agent or a broker to exchange messages.
 
+Producer
+Producer is an application that sends messages. It does not send messages directly to the recipient. It send messages only to the Kafka server.
 
+Consumer
+Consumer is an application that reads messages from the Kafka server.
+If producers are sending data, they must be sending it to someone, right? The consumers are the recipients. But remember that the producers don't send data to a
+recipient address. They just send it to Kafka server. And anyone who is interested in that data can come forward and take it from Kafka server. So, any application that
+requests data from a Kafka server is a consumer, and they can ask for data send by any producer provided they have permissions to read it.
 
+Kafka Topic
+We learned that producer sends data to the Kafka broker. Then a consumer can ask for data from the Kafka broker. But the question is, Which data? We need to have some
+identification mechanism to request data from a broker. There comes the notion of the topic.
+· Topic is like a table in database or folder in a file system.
+. Topic is identified by a name.
+. You can have any number of topics.
 
-
-		
+Kafka Partitions
+Kafka topics are divided into a number of partitions, which contain records in an unchangeable sequence.
+Kafka Brokers will store messages for a topic. But the capacity of data can be enormous and it may not be possible to store in a single computer. Therefore it will partitioned into multiple parts and
+distributed among multiple computers, since Kafka is a distributed system.
 			
-		
+Offsets
+Offset is a sequence of ids given to messages as the arrive at a partition. Once the offset is assigned it will never be changed. The first message gets an offset zero. The next
+message receives an offset one and so on.
+
+Consumer Groups
+A consumer group contains one or more consumers working together to process the messages.
