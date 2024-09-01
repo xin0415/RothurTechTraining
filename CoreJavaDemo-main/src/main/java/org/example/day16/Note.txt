@@ -1,3 +1,4 @@
+kafka: https://www.youtube.com/watch?v=U17DtHLOsTU&list=PLGRDMO4rOGcNLwoack4ZiTyewUcF6y6BU
  Message System
 	why message system
 	Message System Model
