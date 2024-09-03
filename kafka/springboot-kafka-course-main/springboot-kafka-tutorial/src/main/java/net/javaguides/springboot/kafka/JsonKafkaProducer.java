@@ -12,7 +12,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JsonKafkaProducer {
-    private static final Logger LOGGER= LoggerFactory.getLogger(JsonKafkaProducer.class);
+
+    @Value("${spring.kafka.topic-json.name}")
+    private String topicJsonName;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonKafkaProducer.class);
 
     private KafkaTemplate<String, User> kafkaTemplate;
 
@@ -20,12 +24,15 @@ public class JsonKafkaProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(User data) {
-        LOGGER.info(String.format("Message send -> %s", data.toString()));
-        Message<User> message= MessageBuilder
+    public void sendMessage(User data){
+
+        LOGGER.info(String.format("Message sent -> %s", data.toString()));
+
+        Message<User> message = MessageBuilder
                 .withPayload(data)
-                .setHeader(KafkaHeaders.TOPIC,"javaguides_json")
+                .setHeader(KafkaHeaders.TOPIC, topicJsonName)
                 .build();
+
         kafkaTemplate.send(message);
     }
 }
