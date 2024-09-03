@@ -1,4 +1,7 @@
 kafka: https://www.youtube.com/watch?v=U17DtHLOsTU&list=PLGRDMO4rOGcNLwoack4ZiTyewUcF6y6BU
+https://kafka.apache.org/quickstart
+https://spring.io/projects/spring-kafka
+https://docs.spring.io/spring-kafka/reference/index.html
  Message System
 	why message system
 	Message System Model
@@ -102,3 +105,55 @@ message receives an offset one and so on.
 
 Consumer Groups
 A consumer group contains one or more consumers working together to process the messages.
+
+--------------------------------------------------------------------------------------
+Configure Kafka Producer and Consumer for JSON Serializer and Deserializer
+How to send and receive a Java Object as a JSON bytell to and from Apache Kafka.
+
+Apache Kafka stores and transports bytel]. There are a number of built-in serializers and deserializers but it doesn't include any for JSON. Spring Kafka created a
+JsonSerializer and JsonDeserializer which we can use to convert Java Objects to and from JSON.
+
+We'll send a Java Object as JSON bytell to a Kafka Topic using a JsonSerializer. Afterward, we'll configure how to receive a JSON bytell and automatically convert it
+to a Java Object using a JsonDeserializer.
+------------------------------------------------------------------------------------------
+
+Kafka run in windows
+STEP 1: DOWNLOAD AND INSTALL KAFKA
+https://dlcdn.apache.org/kafka/3.2.0/kafka 2.13-3.2.0.tgz
+
+STEP 2: START THE KAFKA ENVIRONMENT
+# Start the ZooKeeper service
+C:\Users\RAMESH\Downloads\kafka>.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+
+# Start the Kafka broker service
+C:\Users\RAMESH\Downloads\kafka>.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+STEP 3: CREATE A TOPIC TO STORE YOUR EVENTS
+C:\Users\RAMESH\Downloads\kafka>.\bin\windows\kafka-topics.bat --create --topic topic_demo --bootstrap-server localhost:9092
+
+STEP 4: WRITE SOME EVENTS INTO THE TOPIC
+C:\Users\RAMESH\Downloads\kafka>.\bin\windows\kafka-console-producer.bat --topic topic_demo --bootstrap-server localhost:9092
+>hello world
+>topic demo
+
+STEP 5: READ THE EVENTS
+C:\Users\RAMESH\Downloads\kafka>.\bin\windows\kafka-console-consumer.bat --topic topic_demo --from-beginning --bootstrap-server localhost:9092
+hello world
+topic demo
+
+Run the following command in the new terminal
+Read message from kafka after send the message from producer
+bin/kafka-console-consumer.sh --topic TopicName --from-beginning --bootstrap-server localhost:9092
+
+---------------------------------------------------------
+What is event-driven architecture?
+Event-driven architecture (EDA) is a software design pattern in which decoupled applications can asynchronously publish and subscribe to events via an event broker/message broker.
+
+In an Event-Driven Architecture, applications communicate with each other by sending and/or receiving events or messages
+
+Event-driven architecture is often referred to as "asynchronous" communication.
+
+Event-driven apps can be created in any programming language because event- driven is a programming approach, not a language.
+
+An event-driven architecture is loosely coupled.
+---------------------------------------------------------
