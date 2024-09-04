@@ -157,3 +157,61 @@ Event-driven apps can be created in any programming language because event- driv
 
 An event-driven architecture is loosely coupled.
 ---------------------------------------------------------
+Collections.shuffle(array);             // make array in random order
+
+Grafana & Prometheus
+https://www.youtube.com/watch?v=w-c3KYKQQfs
+https://www.youtube.com/watch?v=lILY8eSspEo
+https://www.youtube.com/watch?v=YUabB_7H710
+AWS CloudWatch
+https://www.youtube.com/watch?v=k7wuIrHU4UY
+Kubernetes
+https://www.youtube.com/watch?v=s_o8dwzRlu4
+https://www.youtube.com/watch?v=TlHvYWVUZyc
+NoSQL
+https://www.youtube.com/watch?v=uD3p_rZPBUQ
+Cassandra   - nosql database
+https://www.youtube.com/watch?v=YjYWsN1vek8&list=PL2g2h-wyI4SqCdxdiyi8enEyWvACcUa9R
+MongoDB     - nosql database
+https://www.youtube.com/watch?v=bKjH8WhSu_E
+
+OOP         -> CART -> Clarification, Assumption, Result, Test
+System Design   -> SSSS Scenario, service, storage, Scale
+
+Grafana is application for visualizing data, allows you to build charts, graphs and dashboards of data that you want to visualize. Grafana queries data source. data source return the required data.
+There are two main categories of data that is visualized in grafana are metrics and logs. Common metrics: CPU load, current memory usage, temperature. Common log output: error message
+Prometheus is data source
+
+AWS CloudWatch is a system that helps you monitor the health of your applications that are built on aws. AWS CloudWatch Logs has two main components. The first one is Log groups and the second one is insights
+Log groups are raw data dumps for your log files. but it is hard to read all the log one by one, that default filter is not working wells. Insights help to solve this and used to filter the log by using query
+AWS CloudWatch Event used to create rule to invoke the lambda function
+AWS Cloudwatch serviceLens is take a more granular look at what the invocations of system are spending their time on. for example, instance if you have a lambda function that writes to dynamo then publishes to an SNS topic.
+ServiceLens allows you to do is kind of see how much of the total invocation duration for this lambda function is being spent on the dynamodb call and how much of that is being spent on the SNS
+AWS CloudWatch Container Insights are using ecs elastic container service or elastic kubernetes service
+AWS CloudWatch Synthetics we can kind of create canaries out of synthetics and what canaries allow you to do. monitor the health of your application through some periodic pings,
+so you can kind of attach a canary to a certain api and keep on invoking that api every minute or on a frequent cadence that you specify and what this will allow you to do is ensure that this api is always up and running. This is way to monitor the health of your
+service and also give you early warning system or early warning notifications. and tell you whether or not a system is working correctly
+AWS CouldWatch Contributor Insights allows you to do time series analysis on your data, allows you to do grouping of data.
+
+Kubernetes is an open-source container orchestration platform. It automates the deployment, scaling, and management of containerized application. The two core pieces in a Kubernetes cluster.
+The first is control plane. it is responsible for managing the state of the cluster. In production environments, the control plane usually runs on multiple nodes that span across several data center zones.
+Control Plane consists of a number of core components. They are API server, etcd, scheduler and the controller manager
+API server is the primary interface between the control plane and the rest of the cluster
+etcd is a distributed key-value store. it stores the cluster's persistent state. it is used by the API server and other components of the control plane to store and retrieve information about the cluster
+Scheduler is responsible for scheduling pods onto the worker nodes in the cluster
+The controller manager is responsible for running controllers that manage the state of the cluster
+The second is a set of worker nodes. These nodes run the containerized application workloads. The containerized applications run in a Pod. Pds are smallest deployable units in Kubernetes. Pads are created and managed by the Kubernetes control plane.
+The core components of Kubernetes that run on the worker nodes include kubelet, container runtime, and kube proxy
+The kubelet is a daemon that runs on each worker node. It is responsible for communicating with the control plane. It receives instructions from the control plane about which pads to run on the node and ensures that the desired sate of the pads is maintained
+The container runtime runs the containers on the worker nodes. It is responsible for pulling the container images from a registry, starting and stopping the containers, and managing the containers' resources.
+The kube-proxy is a network proxy that runs on each worker node. It is responsible for routing traffic to the correct pods. It also provides load balancing for the pods and ensures that traffic is distributed evenly across the pods.
+Pros:
+Kubernetes is scalable and highly available. It provides features like self-healing automatic rollbacks, and horizontal scaling. It makes it easy to scale our applications up and down as needed, allowing us to respond to changes in demand quickly.
+Kubernetes is portable. It helps us deploy and manage applications in a consistent and reliable way regardless of the underlying infrastructure. It runs on-premise, in a public cloud, or in a  hybrid environment. It provides a uniform way to package, deploy, and manage applications.
+Cons:
+drawback is complexity. It is complex to set up and operate. The upfront cost is high, especially for organizations new to container orchestration. It requires a high level of expertise and resources to set up and manage a production Kubernetes environment.
+second draw back is cost. It requires a certain minimum level of resources to run in order to support all the features above. It is likely an overkill for manyu smaller organizations.
+One popular option that strikes a reasonable balance is to offload the management of the control plane to a managed Kubernetes service. Managed Kubernetes services are provided by cloud providers. Likes, Amazon EKS, GKE on Google cloud, and AKS on Azure.
+These services allow organizations to run the kubernetes application without having to worry about the underlying infrastructure. They take care of tasks that require deep expertise, like setting up and configuring the control plane, scaling the cluster, and providing ongoing maintenance and support.
+
+
