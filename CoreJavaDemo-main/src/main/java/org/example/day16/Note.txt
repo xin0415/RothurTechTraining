@@ -195,16 +195,21 @@ AWS CouldWatch Contributor Insights allows you to do time series analysis on you
 
 Kubernetes is an open-source container orchestration platform. It automates the deployment, scaling, and management of containerized application. The two core pieces in a Kubernetes cluster.
 The first is control plane. it is responsible for managing the state of the cluster. In production environments, the control plane usually runs on multiple nodes that span across several data center zones.
+Master node is control plane, important k8s processes are running
 Control Plane consists of a number of core components. They are API server, etcd, scheduler and the controller manager
-API server is the primary interface between the control plane and the rest of the cluster
-etcd is a distributed key-value store. it stores the cluster's persistent state. it is used by the API server and other components of the control plane to store and retrieve information about the cluster
-Scheduler is responsible for scheduling pods onto the worker nodes in the cluster
-The controller manager is responsible for running controllers that manage the state of the cluster
+API server is the primary interface between the control plane and the rest of the cluster. API Server = Entrypoint to k8s cluster
+etcd is a distributed key-value store. it stores the cluster's persistent state. it is used by the API server and other components of the control plane to store and retrieve information about the cluster. etcd = Kubernetes backing store. etcd holds the current status of any K8s component
+Scheduler is responsible for scheduling pods onto the worker nodes in the cluster. Scheduler = ensures Pods placement. it decides on which Node new Pod should be scheduled
+The controller manager is responsible for running controllers that manage the state of the cluster. Controller manager = keeps track of whats happening in the cluster
+Using Virtual network to communicate between control plane and node worker. Virtual Network= Creates one unified machine
 The second is a set of worker nodes. These nodes run the containerized application workloads. The containerized applications run in a Pod. Pds are smallest deployable units in Kubernetes. Pads are created and managed by the Kubernetes control plane.
+The node contains different application on it or different number of docker run in each node
 The core components of Kubernetes that run on the worker nodes include kubelet, container runtime, and kube proxy
 The kubelet is a daemon that runs on each worker node. It is responsible for communicating with the control plane. It receives instructions from the control plane about which pads to run on the node and ensures that the desired sate of the pads is maintained
 The container runtime runs the containers on the worker nodes. It is responsible for pulling the container images from a registry, starting and stopping the containers, and managing the containers' resources.
 The kube-proxy is a network proxy that runs on each worker node. It is responsible for routing traffic to the correct pods. It also provides load balancing for the pods and ensures that traffic is distributed evenly across the pods.
+Control Plane Nodes: handful of master processes, much more important
+Worker Node: higher workload and much bigger and more resources
 Pros:
 Kubernetes is scalable and highly available. It provides features like self-healing automatic rollbacks, and horizontal scaling. It makes it easy to scale our applications up and down as needed, allowing us to respond to changes in demand quickly.
 Kubernetes is portable. It helps us deploy and manage applications in a consistent and reliable way regardless of the underlying infrastructure. It runs on-premise, in a public cloud, or in a  hybrid environment. It provides a uniform way to package, deploy, and manage applications.
@@ -213,5 +218,72 @@ drawback is complexity. It is complex to set up and operate. The upfront cost is
 second draw back is cost. It requires a certain minimum level of resources to run in order to support all the features above. It is likely an overkill for manyu smaller organizations.
 One popular option that strikes a reasonable balance is to offload the management of the control plane to a managed Kubernetes service. Managed Kubernetes services are provided by cloud providers. Likes, Amazon EKS, GKE on Google cloud, and AKS on Azure.
 These services allow organizations to run the kubernetes application without having to worry about the underlying infrastructure. They take care of tasks that require deep expertise, like setting up and configuring the control plane, scaling the cluster, and providing ongoing maintenance and support.
+Main Kubernetes Components:
+Node = virtual or physical machine
+Pod is smallest unit in Kubernetes. Abstraction over container. Usually 1 Application per Pod. You can run multiple application inside, but usually just one. Each Pod gets its own IP address. Pods are ephemeral that means they can die easily. New IP address on re-creation. when application down, new one will be created and using new IP address
+Service permanent IP address. Lifecycle of Pod and Service not connected. When a service down and re-creation, the ip keeps same. You specify the type of service on creation. Internal Service is the default type
+Ingress: the request go through ingress and it does the forwarding to the service. so url won't look like http://124.89.101.2:8080, it will look like https://my-app.com
+ConfigMap: External Configuration of your application. contains the configuration like url for database. ConfigMap is for non-confidential data only.
+Secret: like configMap, but it used to store secret data, like password. Reference Secret in Deployment/Pod. Use it as environment variables or as properties file
+Volume: Data Storage. When the database restart, the data will be gone. it can use volume to solve. Storage on local machine or remote, outside of the K8s cluster. Kubernetes doesn't manage data persistance.
+Deployment: permanent IP and load balancer. Define blueprint for Pods. Specify how many replicas you want to have. DB can't be replicated via Deployment, but can use Statefulset. Deployment = for stateless apps
+StatefulSet: for stateful apps or database
+DaemonSet
+
+
+NoSQL
+A flexible database used for big data & real-time web apps
+multiple types of NoSQL databases
+
+What is Big Data?
+a term for data sets that are so large that traditional methods of storage & processing are inadequate
+Massive increase in data volume within the last decade or so
+Social networks, search engines
+Challenges in storage, capture, analysis, transfer
+
+Advantages of NoSQL Over RDBMS
+Handles Big Data
+Data Models - No predefined schema
+Data Structure - NoSQL handles unstructured data
+Cheaper to manage
+Scaling - Scale out / horizontal scaling
+
+Advantages of RDBMS Over NoSQL
+Better for relational data
+Normalization
+Well known language (SQL)
+Data Integrity
+ACID Compliance
+
+Types of NoSQL Databases
+Document Databases [MongoDB, CouchDB]
+Column Databases [Apache Cassandra]
+Key-Value Stores [Redis, Couchbase Server]
+Cache Systems [Redis, Memcache]
+Graph Databases [Neo4J]
+
+Cassandra is NoSQL Distributed Database. Each instance of cassandra is called node and this contains a full cassandra database. It is a leaderless peer-to-peer system that meaning any node can do what any other node can.
+Nodes communicate through a protocol called gossip. They use this transfer information to one another. Nodes are organized into groups called data centers notice the ring connecting all the nodes
+Data on cassandra is divided up into what are called partitions
+Each node has number assign to it. these are called partition tokens and every node is assigned a set of tokens they own
+when you add a partition keys to a table that value is automatically hashed out to a token value that is how cassandra knows where to store and retrieve your data the partition key
+cassandra wouldn't be very robust database if it only had stored one copy of a partition in one place if that were the case it wouldn't take much before a single failure could mean missing data or a failed operation and this is where replication factor come into play
+one copy of that partition on one node if replication fact (RF)=1
+increase to a replication factor = 2, it has two rings and two nodes (two copy)
+Consistency level (CL) CL=QUORUM
+For write operation, When RF=3 and using CL=QUORUM, Cassandra wait for an acknowledgement from two nodes before saying the node is ok, then send the result to client
+For read operation, When RF=3 and using CL=QUORUM, the client makes a request the coordinator reads from two nodes and result sent back to client
+read QUORUM and write QUORUM is called immediate consistency. it means I can immediately read what I just wrote anywhere in my cluster. This is the standard and balances performance availability and consistency
+RF =3, it will have 3 nodes to have this data
+any node handle the request will be called coordinator node
+1 installation = 1 node
+each node capacity = ~2-4 TB
+Throughput = LOTS tx/sec/core       many thousands of operations a second per core
+Cassandra
+Petabyte Database
+High Availability
+Geographic Distribution
+Performance
+Vendor Independant
 
 
